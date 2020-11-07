@@ -32,6 +32,14 @@ To install all the necessary software required in this course we will mainly use
 
 This compressed FASTA file contain all sequence regions flagged as toplevel in an Ensembl schema. This includes chromsomes, regions not assembled into chromosomes and N padded haplotype/patch regions
 
+Now, decompress the gzipped FASTA file
+
+        gzip -d Oryza_sativa.IRGSP-1.0.dna.toplevel.fa.gz
+
+Finally, you need to generate an index file that will be used by different tools in this course
+
+        samtools faidx Oryza_sativa.IRGSP-1.0.dna.toplevel.fa
+
 ## 3. Download sequencing data for sample SAMEA2569438 
 Download the two FASTQ files containing the forward and reverse reads in a paired-end sequencing experiment from the ENA:
 
@@ -89,4 +97,6 @@ BWA has different run options. Enter this in your terminal:
 
 It is widely accepted that the alignment for reads having a length: 70 bp to 1Mb is `BWA mem`, as it is more accurate and faster than the other alignment algorithms included with `BWA`
 
- To run `BWA` 
+ To run `BWA` enter the following if you want to get an aligment in the SAM format:
+
+        bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa.gz runId_1.fastq.gz runId_2.fastq.gz |samtools view -b -o ${runId}.bam
