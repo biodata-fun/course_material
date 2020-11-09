@@ -156,8 +156,11 @@ And if you want to get the alignments on a particular genomic region:
         $ samtools view ERR605441.bam 1:10000000-10000010
         [main_samview] random alignment retrieval only works for indexed BAM or CRAM files.
 
-This does not work because you need to index the `.bam` file first:
+This does not work because you need to sort and index the `.bam` file first:
 
+        $ samtools sort ERR605441.bam -o ERR605441.sorted.bam -O BAM
+        $ samtools index ERR605441.sorted.bam # index
+        $ samtools view ERR605441.sorted.bam 1:10000000-10000010 # repeat the command
 
  * Some basic stats on the alignment
 
