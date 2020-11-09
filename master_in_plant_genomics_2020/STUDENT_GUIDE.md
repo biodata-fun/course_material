@@ -99,4 +99,107 @@ It is widely accepted that the alignment for reads having a length: 70 bp to 1Mb
 
  To run `BWA` enter the following if you want to get an aligment in the SAM format:
 
-        bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa.gz runId_1.fastq.gz runId_2.fastq.gz |samtools view -b -o ${runId}.bam
+        bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa runId_1.fastq.gz runId_2.fastq.gz -o ${runId}.sam
+
+If you want to obtain an alignment file in the `BAM` format enter the following:
+
+        bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa runId_1.fastq.gz runId_2.fastq.gz |samtools view -b -o ${runId}.bam
+
+Finally, if you want to generate an alignment in the CRAM format do the following:
+
+        bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa runId_1.fastq.gz runId_2.fastq.gz |samtools view -C -T /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa > ${runId}.cram
+
+### 4.2 The SAM alignment format
+The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format))), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
+This format is not compressed and it is preferable to convert it to its binary equivalent (BAM) or to the ultra-compressed equivalent called CRAM to facilitate its handling and storage.
+
+Compare the diferent file sizes for each of the alignment files by listing the directory content:
+
+        $ ls -lh
+
+And you get:
+
+        $ drwxrwxr-x 2 ernesto nucleotide  4.0K Nov  7 19:21 .
+        $ drwxrwxr-x 5 ernesto nucleotide  4.0K Nov  7 19:03 ..
+        $ -rw-rw-r-- 1 ernesto nucleotide  393M Nov  6 19:44 ERR605441.bam
+        $ -rw-rw-r-- 1 ernesto nucleotide  160M Nov  7 19:21 ERR605441.cram
+        $ -rw-rw-r-- 1 ernesto nucleotide  1.1G Nov  6 18:24 ERR605441.sam
+
+<mark>CRAM format reference (https://www.internationalgenome.org/faq/what-are-cram-files/)</mark>
+
+Alignment files in this format (format specification is described [here](https://samtools.github.io/hts-specs/SAMv1.pdf)) start with an optional header section followed by the alignment lines. All header lines start with '@' and are used to represent different metadata elements like the reference version and the chromosome sequence ids used in the alignment, the technology used for generating the sequence data, if the alignment file is sorted or unsorted, etc ... The alignment lines are characterized by having 11 mandatory fields:
+
+| Col         | Field       | Type     | Brief description                     |
+| ----------- | ----------- | -------- | ------------------------------------- |
+| 1           | QNAME       |  String  |  Query template NAME                  |
+| 2           | FLAG        |  int     |  bitwise FLAG                         |
+| 3           | RNAME       |  String  |  References sequence NAME             |
+| 4           | POS         |  int     |  1- based leftmost mapping POSition   |
+| 5           | MAPQ        |  int     |  Mapping quality                      |
+| 6           | CIGAR       |  String  |  CIGAR string                         |
+| 7           | RNEXT       |  String  |  Ref. name of the mate/next read      |
+| 8           | PNEXT       |  int     |  Position of the mate/next read       |
+| 9           | TLEN        |  int     |  observed template length             |
+| 10          | SEQ         |  String  |  segment sequence                     |
+| 11          | QUAL        |  String  |  ASCII of Phred-scaled base QUALity+33|
+
+### 4.3 Samtools 
+
+[Samtools](http://www.htslib.org/doc/samtools.html) is a command line tool used to interact and manipulate the SAM-related alignment files. These are some of the set of commands that are more relevant for this course:
+
+        $ samtools view ERR605441.bam # print the alignment to stdout 
+
+        $ samtools view -H ERR605441.bam # print the header section
+
+And if you want to get the alignments on a particular genomic region:
+
+        $ samtools view ERR605441.bam 1:10000000-10000010
+        [main_samview] random alignment retrieval only works for indexed BAM or CRAM files.
+
+This does not work because you need to index the `.bam` file first:
+
+
+ * Some basic stats on the alignment
+
+        $ samtools stats ERR605441.bam |less
+
+And you get:
+
+        SN      raw total sequences:    4293094
+        SN      filtered sequences:     0
+        SN      sequences:      4293094
+        SN      is sorted:      0
+        SN      1st fragments:  2146547
+        SN      last fragments: 2146547
+        SN      reads mapped:   4094201
+        SN      reads mapped and paired:        4073468 # paired-end technology bit set + both mates mapped
+        SN      reads unmapped: 198893
+        SN      reads properly paired:  3822534 # proper-pair bit set
+        SN      reads paired:   4293094 # paired-end technology bit set
+        SN      reads duplicated:       0       # PCR or optical duplicate bit set
+        SN      reads MQ0:      719477  # mapped and MQ=0
+        SN      reads QC failed:        0
+        SN      non-primary alignments: 0
+        SN      total length:   356326802       # ignores clipping
+        SN      total first fragment length:    178163401       # ignores clipping
+        SN      total last fragment length:     178163401       # ignores clipping
+        SN      bases mapped:   339818683       # ignores clipping
+        SN      bases mapped (cigar):   337723141       # more accurate
+        SN      bases trimmed:  0
+        SN      bases duplicated:       0
+        SN      mismatches:     2477885 # from NM fields
+        SN      error rate:     7.337030e-03    # mismatches / bases mapped (cigar)
+        SN      average length: 83
+        SN      average first fragment length:  83
+        SN      average last fragment length:   83
+        SN      maximum length: 83
+        SN      maximum first fragment length:  83
+        SN      maximum last fragment length:   83
+        SN      average quality:        36.7
+        SN      insert size average:    451.2
+        SN      insert size standard deviation: 36.9
+        SN      inward oriented pairs:  1970730
+        SN      outward oriented pairs: 3846
+        SN      pairs with other orientation:   4771
+        SN      pairs on different chromosomes: 58807
+        SN      percentage of properly paired reads (%):        89.0
