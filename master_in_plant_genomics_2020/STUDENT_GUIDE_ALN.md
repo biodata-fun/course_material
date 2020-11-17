@@ -1,4 +1,4 @@
-# Ensembl - Alignment course
+# IGSR - Alignment course
 
 We will use for this course the genomic data generated for [_Oryza sativa_ Japonica](https://plants.ensembl.org/Oryza_sativa/Info/Index) (rice) 
 
@@ -110,6 +110,29 @@ If you want to obtain an alignment file in the `BAM` format enter the following:
 Finally, if you want to generate an alignment in the CRAM format do the following:
 
         bwa mem /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa runId_1.fastq.gz runId_2.fastq.gz |samtools view -C -T /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa > ${runId}.cram
+
+You can check that `BWA` is running by using the `top` Unix command. For this, first check what is your username in your machine:
+
+        $ whoami
+        ernesto # this will be different depending on your system
+Now, you can use the `top` commamd to obtain a summary of the processes that user `ernesto` is running in the system:
+
+        top -u ernesto
+You should see something similar to what I got in my system:
+        
+        top - 13:01:44 up 67 days,  9:27,  0 users,  load average: 11.18, 11.14, 11.22
+        Tasks: 995 total,   6 running, 989 sleeping,   0 stopped,   0 zombie
+        %Cpu(s): 13.8 us,  0.4 sy,  0.0 ni, 85.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+        KiB Mem : 26372707+total, 14490720+free, 68764784 used, 50055096 buff/cache
+        KiB Swap:  8191996 total,  7146680 free,  1045316 used. 19283916+avail Mem
+
+        PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+        164759 ernesto   20   0  936492 778536    936 S 100.3  0.3   0:11.97 bwa
+        164875 ernesto   20   0  171116   3380   1628 R   0.3  0.0   0:00.07 top
+        101804 ernesto   20   0   46216   3152   1792 S   0.0  0.0   4:58.73 res
+        101839 ernesto   20   0  113140   1440   1200 S   0.0  0.0   0:00.00 1605100319.8865
+        101841 ernesto   20   0  129504   3952   1828 S   0.0  0.0   0:02.51 bash
+        164760 ernesto   20   0   87720   2676   1872 S   0.0  0.0   0:00.00 samtools
 
 ### 4.2 The SAM alignment format
 The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format))), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
