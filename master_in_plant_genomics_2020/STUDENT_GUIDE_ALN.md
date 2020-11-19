@@ -210,44 +210,60 @@ And you get:
 ### Alignment post-processing
 The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following module of this course
 
-#### **Sort the alignment file**
+##### **Adding metadata to the alignment file**
+BWA generates a `BAM` file without any metadata on the sequencing experimental design that has been used, this is why we need to manually add this metadata so it can by used by the variant calling analysis that is described in the variant calling section of this course. For this, we are going to use [Picard AddOrReplaceReadGroups](https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-) in the following way:
+
+        picard AddOrReplaceReadGroups I=SAMEA2569438.chr10.bam RGSM=SAMEA2569438 RGLB=SAMEA2569438 RGPL=ILLUMINA O=SAMEA2569438.chr10.reheaded.bam RGPU=SAMEA2569438
+
+This command will add information on the sample id that has been sequenced, what sequencing platform has been used and also information on the sequencing library id. You can check the SAM header for the new BAM with metadata information by doing:
+
+        samtools view -H SAMEA2569438.chr10.reheaded.bam
+
+And you will see the added metadata in the `@RG` line:
+
+        @HD     VN:1.6  SO:unsorted
+        @SQ     SN:10   LN:23207287
+        @RG     ID:1    LB:SAMEA2569438 PL:ILLUMINA     SM:SAMEA2569438 PU:SAMEA2569438
+        @PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10_1.fastq.gz SAMEA2569438.chr10_2.fastq.gz
+
+##### **Sort the alignment file**
 Most of the tools used for post-processing assume that the `BAM` file is coordinate sorted. We are going to use `samtools sort` for sorting the alignment file:
 
-        samtools sort SAMEA2569438.chr10.bam -O BAM -o SAMEA2569438.chr10.sorted.bam
+        samtools sort SAMEA2569438.chr10.reheaded.bam -O BAM -o SAMEA2569438.chr10.reheaded.sorted.bam
 
-#### **MarkDuplicates** 
+##### **MarkDuplicates** 
 The alignment file can contain reads that are duplicates. These reads are originated in the PCR amplification step during the sample preparation that might produce identical reads coming from the same DNA fragment. These duplicate reads need to be identified and marked so they can be correctly handled by the variant calling tool. There are multiple tools to detect these duplicates, in this course we will use [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates), which is one of the most reliable ones.
 
-        picard MarkDuplicates I=SAMEA2569438.chr10.sorted.bam O=SAMEA2569438.chr10.sorted.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
+        picard MarkDuplicates I=SAMEA2569438.chr10.reheaded.sorted.bam O=SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
 
 With use option `M` so `MarkDuplicates` generates a text file with metrics on the number of reads duplicates. This file is named ` SAMEA2569438.chr10.metrics.txt` in this case. Let's open this metrics file:
 
         less SAMEA2569438.chr10.metrics.txt
 The first part of the file is the most relevant for us:
 
-       ## METRICS CLASS        picard.sam.DuplicationMetrics
-        LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES        READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATES    PERCENT_DUPLICATION     ESTIMATED_LIBRARY_SIZE
-        Unknown Library 6560    580125  759     6560    524     19812   0       0.034408        8298967
+      ## METRICS CLASS        picard.sam.DuplicationMetrics
+      LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES        READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATES    PERCENT_DUPLICATION     ESTIMATED_LIBRARY_SIZE
+      SAMEA2569438    6560    580125  759     6560    524     19812   0       0.034408        8298967
         ...
 
 We can the reads that are duplicates using samtools view in combination with the bitwise FLAG value in the second column that retrieves the PCR duplicates
 
-        samtools view -f 1024 SAMEA2569438.chr10.sorted.mark_duplicates.bam |less
+        samtools view -f 1024 SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam |less
 
 ### **Viewing the aligned reads using IGV**
-The Integrative Genomics Viewer [IVG](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the alignments we have generated. In this example we will fetch the alignments for a specific region of interest in our chromosome 10 alignment file.
+The Integrative Genomics Viewer [IVG](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the alignments we have generated. In this example we will fetch the alignments for a specific region in chromosome 10.
 
 For this, we need first to index the `BAM` file:
 
-        samtools index SAMEA2569438.chr10.sorted.mark_duplicates.bam
+        samtools index SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam
 
  Then we extract all the alignments for the `10:10000000-11000000` region that are correct, which means that both members of the read pair are correctly mapped. For this, we use the SAM flag = 2 and `samtools view`:
 
-        samtools view -f 2 ../SAMEA2569438.chr10.sorted.mark_duplicates.bam 10:10000000-11000000 -b -o SAMEA2569438.chr10.sorted.mark_duplicates.mini.bam
+        samtools view -f 2 ../SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam 10:10000000-11000000 -b -o SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.mini.bam
 
 And now we need to create an index for the new `BAM`, as IGV needs it to quickly retrieve the aligments to display:
 
-        samtools index SAMEA2569438.chr10.sorted.mark_duplicates.mini.bam
+        samtools index SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.mini.bam
 
 Now, open `IGV` by going to your terminal and entering:
 

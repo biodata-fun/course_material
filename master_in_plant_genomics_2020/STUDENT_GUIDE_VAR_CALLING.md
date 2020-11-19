@@ -18,6 +18,7 @@ To install all the necessary software required in this course we will mainly use
 
         conda install freebayes
         conda install -c bioconda bcftools
+        conda install -c bioconda igv
 
 ## Variant calling
 Variant calling is the process to identify variants from sequence data ([see](https://www.ebi.ac.uk/training-beta/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.)).
@@ -32,7 +33,7 @@ FreeBayes needs the reference sequence in the `FASTA` format. In this section of
 #### **Using FreeBayes**
 To run Freebayes you need to specify the ploidy of the genome being analysed, the FASTA reference sequence used for the alignment and the analhysis-ready BAM generated in the first section of the course. Once you have these prepared enter the following command in your terminal:
 
-        freebayes -f /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa --ploidy 2 /path/to/SAMEA2569438.chr10.sorted.mark_duplicates.bam |bgzip -c > SAMEA2569438.chr10.vcf.gz &
+        freebayes -f /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa --ploidy 2 /path/to/SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam |bgzip -c > SAMEA2569438.chr10.vcf.gz &
 
 This command pipes the output of FreeBayes to `bgzip`, which is a special compression/decompression program that is part of SAMTools. It is better to compress the VCF to make the file size smaller and also to use some of the `BCFTools` commands that are discussed later in this section.
 
@@ -149,12 +150,155 @@ And then you can use `bcftools view` with the `-r` option to query a specific re
 
         bcftools view -r 10:10000-20000 SAMEA2569438.chr10.vcf.gz |less
 
+* Print some basic stats for the VCF file
+
+We can use the `stats` command to generate a basic report on the number of variants in a VCF file:
+
+        bcftools stats SAMEA2569438.chr10.vcf.gz |grep ^SN
+
+We pipe the output of the `stats` command to the UNIX `grep` command to print only the lines starting with `SN`:
+
+        SN      0       number of samples:      1
+        SN      0       number of records:      105805
+        SN      0       number of no-ALTs:      0
+        SN      0       number of SNPs: 88827
+        SN      0       number of MNPs: 7910
+        SN      0       number of indels:       8340
+        SN      0       number of others:       1092
+        SN      0       number of multiallelic sites:   458
+        SN      0       number of multiallelic SNP sites:       56
+
+* Selecting the multiallelic SNPs
+
+Use the following command to select the multiallelic SNPs:
+
+        bcftools view -m3 -v snps SAMEA2569438.chr10.vcf.gz
+
+And you get:
+
+        10      134998  .       GCCA    CCCG,GCCG       185.768 .       AB=0.375,0.5;ABP=4.09604,3.0103;AC=1,1;AF=0.5,0.5;AN=2;AO=3,4;CIGAR=1X2M1X,3M1X;DP=8;DPB=8.75;DPRA=0,0;EPP=3.73412,3.0103;EPPR=5.18177;GTI=0;LEN=4,1;MEANALT=2,2;MQM=52.6667,60;MQMR=27;NS=1;NUMALT=2;ODDS=17.466;PAIRED=1,1;PAIREDR=1;PAO=1,0;PQA=39,0;PQR=0;PRO=0;QA=120,153;QR=40;RO=1;RPL=2,2;RPP=3.73412,3.0103;RPPR=5.18177;RPR=1,2;RUN=1,1;SAF=0,2;SAP=9.52472,3.0103;SAR=3,2;SRF=0;SRP=5.18177;SRR=1;TYPE=complex,snp   GT:DP:RO:QR:AO:QA:GL    1/2:8:1:40:3,4:120,153:-23.2698,-10.5583,-11.4412,-11.0232,0,-11.9036
+        10      135116  .       G       A,C     106.967 .       AB=0.6,0.4;ABP=3.44459,3.44459;AC=1,1;AF=0.5,0.5;AN=2;AO=3,2;CIGAR=1X,1X;DP=5;DPB=5;DPRA=0,0;EPP=9.52472,7.35324;EPPR=0;GTI=0;LEN=1,1;MEANALT=2,2;MQM=60,55;MQMR=0;NS=1;NUMALT=2;ODDS=4.02222;PAIRED=0.666667,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=119,80;QR=0;RO=0;RPL=2,0;RPP=3.73412,7.35324;RPPR=0;RPR=1,2;RUN=1,1;SAF=1,2;SAP=3.73412,7.35324;SAR=2,0;SRF=0;SRP=0;SRR=0;TYPE=snp,snp GT:DP:RO:QR:AO:QA:GL    1/2:5:0:0:3,2:119,80:-16.7553,-6.96125,-6.05816,-10.1914,0,-9.58935
+        10      297744  .       ATT     AG,AGT  167.268 .       AB=0.75,0.25;ABP=7.35324,7.35324;AC=1,1;AF=0.5,0.5;AN=2;AO=6,2;CIGAR=1M1D1X,1M1X1M;DP=8;DPB=6;DPRA=0,0;EPP=4.45795,3.0103;EPPR=0;GTI=0;LEN=2,1;MEANALT=2,2;MQM=60,60;MQMR=0;NS=1;NUMALT=2;ODDS=1.25872;PAIRED=0.833333,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=200,75;QR=0;RO=0;RPL=2,2;RPP=4.45795,7.35324;RPPR=0;RPR=4,0;RUN=1,1;SAF=4,1;SAP=4.45795,3.0103;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp     GT:DP:RO:QR:AO:QA:GL    1/2:8:0:0:6,2:200,75:-22.6737,-6.51804,-4.71186,-16.52,0,-15.918
+        10      342811  .       TA      TCG,TC  180.859 .       AB=0.75,0.25;ABP=7.35324,7.35324;AC=1,1;AF=0.5,0.5;AN=2;AO=6,2;CIGAR=1M1I1X,1M1X;DP=8;DPB=11;DPRA=0,0;EPP=3.0103,3.0103;EPPR=0;GTI=0;LEN=2,1;MEANALT=2,2;MQM=60,60;MQMR=0;NS=1;NUMALT=2;ODDS=1.03749;PAIRED=1,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=213,74;QR=0;RO=0;RPL=3,2;RPP=3.0103,7.35324;RPPR=0;RPR=3,0;RUN=1,1;SAF=4,1;SAP=4.45795,3.0103;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp       GT:DP:RO:QR:AO:QA:GL    1/2:8:0:0:6,2:213,74:-23.7598,-6.42196,-4.61578,-17.7038,0,-17.1017
+
 #### **Filtering the artifactual variants**
 
 The process for identifiying variants is not perfect, and FreeBayes and in general all tools used to identify variants will report variants that are not real. These artifactual variants must be idenfitied and flagged so that users or tools using them do not take them into account, or treat them with caution in any subsequent analysis.
 
 There are several filtering tools and strategies available for variant filtering, with varying degrees of complexity and sophistication. However, in this course we will use a very simple, yet effective approach, which consists of using the quality value assigned by FreeBayes as a proxy to estimate the likelihood of a variant being real. The lower the quality value, the less likely it is that a variant is real.
 
-In this course, we will use `bcftools` XXXX with a hard cut-off value of X to flag the variants that have a low quality. 
+In this course, we will use `bcftools filter` with a hard cut-off value of `<=1` to flag the variants that have a low quality. For this enter the following in your terminal:
+
+        bcftools filter -sQUALFILTER -e'QUAL<1' SAMEA2569438.chr10.vcf.gz -o SAMEA2569438.chr10.filt.vcf.gz -Oz
+
+Where the string passed using the `-s` option will set the label used for the filtered lines in the 7th column of the VCF and `-Oz` is used in `bcftools` for generating the output VCF in a compressed format.
+
+Now, use 'bcftools view' to check that the 7th column has 2 new labels: `QUALFILTER` and `PASS`.
+
+        bcftools view -H SAMEA2569438.chr10.filt.vcf.gz |less
+
+`-H` is used to skip the header section and only print the data lines:
+
+        10      5893    .       C       T       55.2291 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=3.0103;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=45.5;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=0;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=75;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=snp  GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:75:-6.72676,-0.60206,0
+        10      9569    .       C       T       8.11386 PASS    AB=0.5;ABP=3.0103;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=4;DPB=4;DPRA=0;EPP=7.35324;EPPR=3.0103;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=43.5;NS=1;NUMALT=1;ODDS=1.69704;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=65;QR=81;RO=2;RPL=2;RPP=7.35324;RPPR=3.0103;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=2;SRP=7.35324;SRR=0;TYPE=snp     GT:DP:RO:QR:AO:QA:GL    0/1:4:2:81:2:65:-4.96917,0,-6.07964
+        10      9682    .       C       T       0.00381086      QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=10.7656;GTI=0;LEN=1;MEANALT=1;MQM=25;MQMR=22.5714;NS=1;NUMALT=1;ODDS=7.03816;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=67;QR=262;RO=7;RPL=0;RPP=7.35324;RPPR=18.2106;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=6;SRP=10.7656;SRR=1;TYPE=snp GT:DP:RO:QR:AO:QA:GL    0/1:9:7:262:2:67:-1.90251,0,-11.6176
+        10      10021   .       G       A       51.1653 PASS    AB=0.75;ABP=5.18177;AC=1;AF=0.5;AN=2;AO=3;CIGAR=1X;DP=4;DPB=4;DPRA=0;EPP=3.73412;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=30;MQMR=19;NS=1;NUMALT=1;ODDS=6.50714;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=104;QR=33;RO=1;RPL=2;RPP=3.73412;RPPR=5.18177;RPR=1;RUN=1;SAF=1;SAP=3.73412;SAR=2;SRF=1;SRP=5.18177;SRR=0;TYPE=snp  GT:DP:RO:QR:AO:QA:GL    0/1:4:1:33:3:104:-6.16983,0,-0.679135
+        ......
+
+We can also print only the variants that have been filtered by doing:
+
+        bcftools view -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |less
+
+And you get:
+
+        10      9682    .       C       T       0.00381086      QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=10.7656;GTI=0;LEN=1;MEANALT=1;MQM=25;MQMR=22.5714;NS=1;NUMALT=1;ODDS=7.03816;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=67;QR=262;RO=7;RPL=0;RPP=7.35324;RPPR=18.2106;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=6;SRP=10.7656;SRR=1;TYPE=snp GT:DP:RO:QR:AO:QA:GL    0/1:9:7:262:2:67:-1.90251,0,-11.6176
+        10      12889   .       T       A       0.884523        QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=3.32051;GTI=0;LEN=1;MEANALT=1;MQM=48.5;MQMR=41.1429;NS=1;NUMALT=1;ODDS=1.4877;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=75;QR=263;RO=7;RPL=0;RPP=7.35324;RPPR=10.7656;RPR=2;RUN=1;SAF=0;SAP=7.35324;SAR=2;SRF=3;SRP=3.32051;SRR=4;TYPE=snp        GT:DP:RO:QR:AO:QA:GL    0/1:9:7:263:2:75:-4.31305,0,-20.0551
+        10      16538   .       AGG     AG      0.014514        QUALFILTER      AB=0.666667;ABP=3.73412;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1M1D1M;DP=3;DPB=2.33333;DPRA=0;EPP=7.35324;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=19;MQMR=32;NS=1;NUMALT=1;ODDS=5.77664;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=22;QR=40;RO=1;RPL=1;RPP=3.0103;RPPR=5.18177;RPR=1;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=5.18177;SRR=1;TYPE=del       GT:DP:RO:QR:AO:QA:GL    0/1:3:1:40:2:22:-0.0253243,0,-2.23306
+        ....
+
+* How many variants have been filtered?
+
+We can use the `stats` command together with the `-f` option to generate a report taken into account only the filtered variants:
+
+        bcftools stats -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |grep ^SN
+
+And you get:
+
+        SN      0       number of samples:      1
+        SN      0       number of records:      5498
+        SN      0       number of no-ALTs:      0
+        SN      0       number of SNPs: 4851
+        SN      0       number of MNPs: 416
+        SN      0       number of indels:       211
+        SN      0       number of others:       34
+        SN      0       number of multiallelic sites:   25
+        SN      0       number of multiallelic SNP sites:       8
+
+
+
 #### **Exploring the identified variants using IGV**
+
+The Integrative Genomics Viewer [IVG](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the variants we have identified. In this example we will explore the variants in a specific region in chromosome 10.
+
+First, open the `igv` viewer by going to your terminal and typing:
+
+        igv
+
+You will need to load in `IGV` the FASTA file containing the chromosome 10 sequence for rice, as this sequence is not included by default in `IGV`:
+
+![load_genome_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_genome.png)
+
+Look for you file and open it.
+
+Now, load the `GTF` file containing the rice gene annotations for chromosome 10:
+
+![load_annotation_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation.png)
+
+![annotation_view_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/annotation_view.png)
+
+You will see the new track with genes annotated in chromosome 10
+
+Now, load the `VCF` file containing the variants:
+![load_variants_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_alignments.png)
+
+![load_variants1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants1.png)
+
+Now, you can click on a particular variant (red vertical bar) to display information such as:
+
+* Position
+* Reference and alternate alleles
+* Type of variant (SNPs or INDEL)
+* Variant quality
+* Filtering status
+* Variant attributes
+* etc ...
+
+![load_variants2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants2.png)
+
+You can also click on the blue vertical bar to display genotype information and attributes:
+
+![load_variants3_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants3.png)
+
+Let's examine in detail a SNP and an INDEL variant. For this, enter the following genomic coordinate in your navigate box:
+
+        10:16,532-16,568
+
+Click on the variant on the left side of the screen:
+
+![indel_example1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example1.png)
+
+You can see that this is a 1bp deletion (AGG->AG) that have an alternate allele_count=1. Which means it is an heterozygous variant, this can be confirmed by clicking on the genotype information bar:
+
+![indel_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example2.png)
+
+Now, click on the variant on the right side of the screen:
+
+![snp_example1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/snp_example1.png)
+
+You can see that this is a single nucleotide substitution (T->A) that have an alternate allele_count=2. Which means it is a homozygous variant, this can be confirmed by clicking on the genotype information bar:
+
+![snp_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/snp_example2.png)
+
+
+
 
