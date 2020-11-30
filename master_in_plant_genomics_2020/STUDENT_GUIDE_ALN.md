@@ -2,26 +2,6 @@
 
 We will use for this course the genomic data generated for [_Oryza sativa_ Japonica](https://plants.ensembl.org/Oryza_sativa/Info/Index) (rice) 
 
-## Installation of dependencies
-To install all the necessary software required in this course we will mainly use [Conda](https://docs.conda.io/en/latest/), which is a package and environment management system that is very convenient for installing all of the dependencies we will use.
-
-1. First, create a new conda environment named `masters_jan2020`
-
-        conda create --name masters_jan2020
-2. Check that the new environment exists by doing
-
-        conda env list
-3. Activate envirnoment
-
-        conda activate masters_jan2020
-4. Install the necessary software
-
-        conda install -c bioconda bwa
-        conda install -c bioconda samtools
-        conda install fastqc
-        conda install picard
-        conda install -c bioconda igv
-
 ## 1. Material used in this course
 
 * [3000 genomes project dataset](http://iric.irri.org/resources/3000-genomes-project), which is an international effort to resequence a core collection of >3000 rice accessions from 92 countries.
@@ -114,25 +94,24 @@ Finally, if you want to generate an alignment in the CRAM format do the followin
 You can check that `BWA` is running by using the `top` Unix command. For this, first check what is your username in your machine:
 
         $ whoami
-        ernesto # this will be different depending on your system
-Now, you can use the `top` commamd to obtain a summary of the processes that user `ernesto` is running in the system:
+        m_jan2020 # this will be different depending on your system
+Now, you can use the `top` commamd to obtain a summary of the processes that user `m_jan2020` is running in the system:
 
-        top -u ernesto
+        top -u m_jan2020
 You should see something similar to what I got in my system:
         
-        top - 13:01:44 up 67 days,  9:27,  0 users,  load average: 11.18, 11.14, 11.22
-        Tasks: 995 total,   6 running, 989 sleeping,   0 stopped,   0 zombie
-        %Cpu(s): 13.8 us,  0.4 sy,  0.0 ni, 85.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-        KiB Mem : 26372707+total, 14490720+free, 68764784 used, 50055096 buff/cache
-        KiB Swap:  8191996 total,  7146680 free,  1045316 used. 19283916+avail Mem
 
-        PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
-        164759 ernesto   20   0  936492 778536    936 S 100.3  0.3   0:11.97 bwa
-        164875 ernesto   20   0  171116   3380   1628 R   0.3  0.0   0:00.07 top
-        101804 ernesto   20   0   46216   3152   1792 S   0.0  0.0   4:58.73 res
-        101839 ernesto   20   0  113140   1440   1200 S   0.0  0.0   0:00.00 1605100319.8865
-        101841 ernesto   20   0  129504   3952   1828 S   0.0  0.0   0:02.51 bash
-        164760 ernesto   20   0   87720   2676   1872 S   0.0  0.0   0:00.00 samtools
+
+        top - 17:10:34 up  2:43,  1 user,  load average: 1.57, 0.69, 0.70
+        Tasks: 180 total,   1 running, 179 sleeping,   0 stopped,   0 zombie
+        %Cpu(s): 96.3 us,  3.7 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+        MiB Mem :    981.3 total,     68.3 free,    549.9 used,    363.1 buff/cache
+        MiB Swap:    923.3 total,    370.3 free,    553.0 used.    272.0 avail Mem 
+
+        PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                  
+        58337 m_jan2020    20   0  265416 165348   2832 S  92.0  16.5   1:20.36 bwa                                                                      
+        4401 m_jan2020    20   0   10872   2868   1792 S   0.0   0.3   0:00.65 bash                                                                     
+        58338 m_jan2020    20   0   24204   9796   8320 S   0.0   1.0   0:04.89 samtools 
 
 ### 4.2 The SAM alignment format
 The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format))), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
@@ -144,11 +123,9 @@ Compare the diferent file sizes for each of the alignment files by listing the d
 
 And you get:
 
-        drwxrwxr-x 2 ernesto nucleotide 4.0K Nov 11 17:22 .
-        drwxrwxr-x 5 ernesto nucleotide 4.0K Nov 11 17:22 ..
-        -rw-rw-r-- 1 ernesto nucleotide 108M Nov 11 13:25 SAMEA2569438.chr10.bam
-        -rw-rw-r-- 1 ernesto nucleotide  42M Nov 11 17:14 SAMEA2569438.chr10.cram
-        -rw-rw-r-- 1 ernesto nucleotide 308M Nov 11 17:05 SAMEA2569438.chr10.sam
+        -rw-rw-r-- 1 m_2020 m_2020 109M Nov 25 17:12 SAMEA2569438.chr10.bam
+        -rw-rw-r-- 1 m_2020 m_2020 308M Nov 25 17:34 SAMEA2569438.chr10.sam
+        -rw-rw-r-- 1 m_2020 m_2020  42M Nov 25 17:38 SAMEA2569438.cram
 
 <mark>CRAM format reference (https://www.internationalgenome.org/faq/what-are-cram-files/)</mark>
 
@@ -206,7 +183,6 @@ And you get:
         6560 + 0 singletons (0.56% : N/A)
         0 + 0 with mate mapped to a different chr
         0 + 0 with mate mapped to a different chr (mapQ>=5)
-
 ### Alignment post-processing
 The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following module of this course
 
@@ -246,7 +222,7 @@ The first part of the file is the most relevant for us:
       SAMEA2569438    6560    580125  759     6560    524     19812   0       0.034408        8298967
         ...
 
-We can the reads that are duplicates using samtools view in combination with the bitwise FLAG value in the second column that retrieves the PCR duplicates
+We can display the reads that are duplicates using samtools view in combination with the bitwise FLAG value in the second column that retrieves the PCR duplicates
 
         samtools view -f 1024 SAMEA2569438.chr10.reheaded.sorted.mark_duplicates.bam |less
 
@@ -293,6 +269,13 @@ And you will see two new tracks, one with the alignments and the other with the 
 ![alignments_view2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/alignments_view2.png)
 
 Enter the genomic interval you want to inspect in the blank box or click on the '-' or '+' signs to zoom in/out
+
+When you have finished working you save your session by doing:
+
+![save_session1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session1.png)
+
+![save_session2](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session2.png)
+
 
 
 

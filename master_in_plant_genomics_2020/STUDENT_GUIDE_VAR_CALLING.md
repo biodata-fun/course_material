@@ -2,29 +2,11 @@
 
 We will use for this course the genomic data generated for [_Oryza sativa_ Japonica](https://plants.ensembl.org/Oryza_sativa/Info/Index) (rice) 
 
-## Installation of dependencies
-To install all the necessary software required in this course we will mainly use [Conda](https://docs.conda.io/en/latest/), which is a package and environment management system that is very convenient for installing all of the dependencies we will use.
-
-1. First, create a new conda environment named `masters_jan2020`
-
-        conda create --name masters_jan2020
-2. Check that the new environment exists by doing
-
-        conda env list
-3. Activate envirnoment
-
-        conda activate masters_jan2020
-4. Install the necessary software
-
-        conda install freebayes
-        conda install -c bioconda bcftools
-        conda install -c bioconda igv
-
 ## Variant calling
 Variant calling is the process to identify variants from sequence data ([see](https://www.ebi.ac.uk/training-beta/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.)).
 It starts with the sequencing data in the `FASTQ` format, these sequence reads need to aligned to the reference genome following the procedure explained in the first part of this course, that generated an alignment in the `BAM` file format. Once we have an alignment or multiple alignment files we can use a variant discovery tool to identify the germline variants. There are multiple variant calling tools available, the ones we have more experience with in our group are [SAMTools mpileup](http://samtools.github.io/bcftools/bcftools.html#mpileup), the [GATK suite](https://gatk.broadinstitute.org/hc/en-us) and [FreeBayes](https://github.com/ekg/freebayes). In this course we are going to use FreeBayes, as it is sensitive, precise and relatively simple to use. 
 
-### Freebayes
+### **Freebayes**
 FreeBayes is a haplotype-based variant detector, that uses a joint genotyping method capable of reporting variants on a single sample or on a cohort of multiple samples. It's going to be capable of detecting SNPs (single nucleotide polymorphisms), indels (short insertions and deletions) and MNPs (multi-nucleotide polymorphisms)
 
 #### **Reference Genome**
@@ -56,7 +38,7 @@ After running FreeBayes, you will see a vcf file named `SAMEA2569438.chr10.vcf` 
 
 * Print the header section
 
-        bcftools view -H SAMEA2569438.chr10.vcf.gz
+        bcftools view -h SAMEA2569438.chr10.vcf.gz
 
 You get:
 
@@ -125,19 +107,19 @@ You get:
         bcftools view -H -v snps SAMEA2569438.chr10.vcf.gz |less
 You get:
 
-        10      5893    .       C       T       55.2291 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=3.0103;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=45.5;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=0;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=75;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=snp  GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:75:-6.72676,-0.60206,0
-        10      5944    .       A       C       54.2577 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=47;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=0;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=76;QR=0;RO=0;RPL=1;RPP=3.0103;RPPR=0;RPR=1;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=snp    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:76:-6.62961,-0.60206,0
-        10      9454    .       G       T       37.074  .       AB=0.6;ABP=3.44459;AC=1;AF=0.5;AN=2;AO=3;CIGAR=1X;DP=5;DPB=5;DPRA=0;EPP=3.73412;EPPR=3.0103;GTI=0;LEN=1;MEANALT=1;MQM=51;MQMR=44;NS=1;NUMALT=1;ODDS=3.40948;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=102;QR=72;RO=2;RPL=0;RPP=9.52472;RPPR=7.35324;RPR=3;RUN=1;SAF=2;SAP=3.73412;SAR=1;SRF=1;SRP=3.0103;SRR=1;TYPE=snp     GT:DP:RO:QR:AO:QA:GL    0/1:5:2:72:3:102:-7.95337,0,-5.18999
+       0      9000024 .       G       T       52.1811 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=74;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:74:-7.02402,-0.60206,0
+        10      9000178 .       T       A       93.4005 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=3;CIGAR=1X;DP=3;DPB=3;DPRA=0;EPP=3.73412;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=8.76405;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=119;QR=0;RO=0;RPL=2;RPP=3.73412;RPPR=0;RPR=1;RUN=1;SAF=3;SAP=9.52472;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1   GT:DP:RO:QR:AO:QA:GL    1/1:3:0:0:3:119:-11.095,-0.90309,0
+        10      9000411 .       G       C       93.3954 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=3;CIGAR=1X;DP=3;DPB=3;DPRA=0;EPP=3.73412;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=8.76405;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=119;QR=0;RO=0;RPL=3;RPP=9.52472;RPPR=0;RPR=0;RUN=1;SAF=1;SAP=3.73412;SAR=2;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1   GT:DP:RO:QR:AO:QA:GL    1/1:3:0:0:3:119:-11.0945,-0.90309,0
         ...
 * Print some INDELs
 
          bcftools view -H -v indels SAMEA2569438.chr10.vcf.gz |less
 You get:
 
-        10      16538   .       AGG     AG      0.014514        .       AB=0.666667;ABP=3.73412;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1M1D1M;DP=3;DPB=2.33333;DPRA=0;EPP=7.35324;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=19;MQMR=32;NS=1;NUMALT=1;ODDS=5.77664;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=22;QR=40;RO=1;RPL=1;RPP=3.0103;RPPR=5.18177;RPR=1;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=5.18177;SRR=1;TYPE=del       GT:DP:RO:QR:AO:QA:GL    0/1:3:1:40:2:22:-0.0253243,0,-2.23306
-        10      52050   .       TAT     TT      7.82678 .       AB=0.285714;ABP=5.80219;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1M1D1M;DP=7;DPB=6.33333;DPRA=0;EPP=7.35324;EPPR=6.91895;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=60;NS=1;NUMALT=1;ODDS=1.62193;PAIRED=1;PAIREDR=0.8;PAO=0;PQA=0;PQR=0;PRO=0;QA=78;QR=190;RO=5;RPL=2;RPP=7.35324;RPPR=3.44459;RPR=0;RUN=1;SAF=0;SAP=7.35324;SAR=2;SRF=2;SRP=3.44459;SRR=3;TYPE=del  GT:DP:RO:QR:AO:QA:GL    0/1:7:5:190:2:78:-5.29557,0,-15.3579
-        10      53159   .       CAAAAAAAAAT     CAAAAAAAAT      57.2726 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1M1D9M;DP=2;DPB=1.81818;DPRA=0;EPP=3.0103;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=73;QR=0;RO=0;RPL=2;RPP=7.35324;RPPR=0;RPR=0;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=del  GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:73:-6.9311,-0.60206,0
-        10      55082   .       CTGT    CTGTGT  44      .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1M2I3M;DP=2;DPB=3;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=2;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=59;QR=0;RO=0;RPL=1;RPP=3.0103;RPPR=0;RPR=1;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=ins        GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:59:-5.60384,-0.60206,0
+       10      9000591 .       TAA     TAAA    97.543  .       AB=0.8;ABP=6.91895;AC=1;AF=0.5;AN=2;AO=4;CIGAR=1M1I2M;DP=5;DPB=6.33333;DPRA=0;EPP=3.0103;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=60;NS=1;NUMALT=1;ODDS=3.03447;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=160;QR=39;RO=1;RPL=2;RPP=3.0103;RPPR=5.18177;RPR=2;RUN=1;SAF=4;SAP=11.6962;SAR=0;SRF=0;SRP=5.18177;SRR=1;TYPE=ins;technology.ILLUMINA=1     GT:DP:RO:QR:AO:QA:GL    0/1:5:1:39:4:160:-13.2783,0,-2.39141
+        10      9002447 .       TAAAAAAAT       TAAAAAAAAAT     170.777 .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=6;CIGAR=1M2I8M;DP=6;DPB=7.33333;DPRA=0;EPP=8.80089;EPPR=0;GTI=0;LEN=2;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=12.9229;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=210;QR=0;RO=0;RPL=3;RPP=3.0103;RPPR=0;RPR=3;RUN=1;SAF=2;SAP=4.45795;SAR=4;SRF=0;SRP=0;SRR=0;TYPE=ins;technology.ILLUMINA=1  GT:DP:RO:QR:AO:QA:GL
+    1/1:6:0:0:6:210:-19.2409,-1.80618,0
+        10      9003641 .       CTA     CTTA    71.096  .       AB=0;ABP=0;AC=2;AF=1;AN=2;AO=3;CIGAR=1M1I2M;DP=3;DPB=4;DPRA=0;EPP=3.73412;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=8.76405;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=95;QR=0;RO=0;RPL=2;RPP=3.73412;RPPR=0;RPR=1;RUN=1;SAF=0;SAP=9.52472;SAR=3;SRF=0;SRP=0;SRR=0;TYPE=ins;technology.ILLUMINA=1        GT:DP:RO:QR:AO:QA:GL    1/1:3:0:0:3:95:-8.86456,-0.90309,0
         ...
 
 * Print variants for a specific region
@@ -148,7 +130,7 @@ To fetch the variants located in a specific genomic region you need first to ind
 
 And then you can use `bcftools view` with the `-r` option to query a specific region:
 
-        bcftools view -r 10:10000-20000 SAMEA2569438.chr10.vcf.gz |less
+        bcftools view -H -r 10:11000000-12000000 SAMEA2569438.chr10.vcf.gz |less
 
 * Print some basic stats for the VCF file
 
@@ -158,15 +140,15 @@ We can use the `stats` command to generate a basic report on the number of varia
 
 We pipe the output of the `stats` command to the UNIX `grep` command to print only the lines starting with `SN`:
 
-        SN      0       number of samples:      1
-        SN      0       number of records:      105805
-        SN      0       number of no-ALTs:      0
-        SN      0       number of SNPs: 88827
-        SN      0       number of MNPs: 7910
-        SN      0       number of indels:       8340
-        SN      0       number of others:       1092
-        SN      0       number of multiallelic sites:   458
-        SN      0       number of multiallelic SNP sites:       56
+       SN	0	number of samples:	1
+       SN	0	number of records:	31521
+       SN	0	number of no-ALTs:	0
+       SN	0	number of SNPs:	26352
+       SN	0	number of MNPs:	2484
+       SN	0	number of indels:	2426
+       SN	0	number of others:	341
+       SN	0	number of multiallelic sites:	97
+       SN	0	number of multiallelic SNP sites:	6
 
 * Selecting the multiallelic SNPs
 
@@ -176,10 +158,11 @@ Use the following command to select the multiallelic SNPs:
 
 And you get:
 
-        10      134998  .       GCCA    CCCG,GCCG       185.768 .       AB=0.375,0.5;ABP=4.09604,3.0103;AC=1,1;AF=0.5,0.5;AN=2;AO=3,4;CIGAR=1X2M1X,3M1X;DP=8;DPB=8.75;DPRA=0,0;EPP=3.73412,3.0103;EPPR=5.18177;GTI=0;LEN=4,1;MEANALT=2,2;MQM=52.6667,60;MQMR=27;NS=1;NUMALT=2;ODDS=17.466;PAIRED=1,1;PAIREDR=1;PAO=1,0;PQA=39,0;PQR=0;PRO=0;QA=120,153;QR=40;RO=1;RPL=2,2;RPP=3.73412,3.0103;RPPR=5.18177;RPR=1,2;RUN=1,1;SAF=0,2;SAP=9.52472,3.0103;SAR=3,2;SRF=0;SRP=5.18177;SRR=1;TYPE=complex,snp   GT:DP:RO:QR:AO:QA:GL    1/2:8:1:40:3,4:120,153:-23.2698,-10.5583,-11.4412,-11.0232,0,-11.9036
-        10      135116  .       G       A,C     106.967 .       AB=0.6,0.4;ABP=3.44459,3.44459;AC=1,1;AF=0.5,0.5;AN=2;AO=3,2;CIGAR=1X,1X;DP=5;DPB=5;DPRA=0,0;EPP=9.52472,7.35324;EPPR=0;GTI=0;LEN=1,1;MEANALT=2,2;MQM=60,55;MQMR=0;NS=1;NUMALT=2;ODDS=4.02222;PAIRED=0.666667,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=119,80;QR=0;RO=0;RPL=2,0;RPP=3.73412,7.35324;RPPR=0;RPR=1,2;RUN=1,1;SAF=1,2;SAP=3.73412,7.35324;SAR=2,0;SRF=0;SRP=0;SRR=0;TYPE=snp,snp GT:DP:RO:QR:AO:QA:GL    1/2:5:0:0:3,2:119,80:-16.7553,-6.96125,-6.05816,-10.1914,0,-9.58935
-        10      297744  .       ATT     AG,AGT  167.268 .       AB=0.75,0.25;ABP=7.35324,7.35324;AC=1,1;AF=0.5,0.5;AN=2;AO=6,2;CIGAR=1M1D1X,1M1X1M;DP=8;DPB=6;DPRA=0,0;EPP=4.45795,3.0103;EPPR=0;GTI=0;LEN=2,1;MEANALT=2,2;MQM=60,60;MQMR=0;NS=1;NUMALT=2;ODDS=1.25872;PAIRED=0.833333,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=200,75;QR=0;RO=0;RPL=2,2;RPP=4.45795,7.35324;RPPR=0;RPR=4,0;RUN=1,1;SAF=4,1;SAP=4.45795,3.0103;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp     GT:DP:RO:QR:AO:QA:GL    1/2:8:0:0:6,2:200,75:-22.6737,-6.51804,-4.71186,-16.52,0,-15.918
-        10      342811  .       TA      TCG,TC  180.859 .       AB=0.75,0.25;ABP=7.35324,7.35324;AC=1,1;AF=0.5,0.5;AN=2;AO=6,2;CIGAR=1M1I1X,1M1X;DP=8;DPB=11;DPRA=0,0;EPP=3.0103,3.0103;EPPR=0;GTI=0;LEN=2,1;MEANALT=2,2;MQM=60,60;MQMR=0;NS=1;NUMALT=2;ODDS=1.03749;PAIRED=1,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=213,74;QR=0;RO=0;RPL=3,2;RPP=3.0103,7.35324;RPPR=0;RPR=3,0;RUN=1,1;SAF=4,1;SAP=4.45795,3.0103;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp       GT:DP:RO:QR:AO:QA:GL    1/2:8:0:0:6,2:213,74:-23.7598,-6.42196,-4.61578,-17.7038,0,-17.1017
+        10      9057625 .       GCC     GC,GCA  166.178 .       AB=0.714286,0.285714;ABP=5.80219,5.80219;AC=1,1;AF=0.5,0.5;AN=2;AO=5,2;CIGAR=1M1D1M,2M1X;DP=7;DPB=5.33333;DPRA=0,0;EPP=6.91895,3.0103;EPPR=0;GTI=0;LEN=1,1;MEANALT=2,2;MQM=60,60;MQMR=0;NS=1;NUMALT=2;ODDS=2.13936;PAIRED=1,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=194,74;QR=0;RO=0;RPL=3,2;RPP=3.44459,7.35324;RPPR=0;RPR=2,0;RUN=1,1;SAF=3,1;SAP=3.44459,3.0103;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=del,snp;technology.ILLUMINA=1,1    GT:DP:RO:QR:AO:QA:GL    1/2:7:0:0:5,2:194,74:-22.375,-6.42337,-4.91822,-16.3265,0,-15.7244
+        10      9320227 .       AGCA    GGCG,GGCA       106.742 .       AB=0.5,0.5;ABP=3.0103,3.0103;AC=1,1;AF=0.5,0.5;AN=2;AO=3,3;CIGAR=1X2M1X,1X3M;DP=6;DPB=6.5;DPRA=0,0;EPP=3.73412,3.73412;EPPR=0;GTI=0;LEN=4,1;MEANALT=2,2;MQM=46,60;MQMR=0;NS=1;NUMALT=2;ODDS=4.98145;PAIRED=1,1;PAIREDR=0;PAO=1,1;PQA=34,34;PQR=0;PRO=0;QA=106,115;QR=0;RO=0;RPL=0,0;RPP=9.52472,9.52472;RPPR=0;RPR=3,3;RUN=1,1;SAF=1,2;SAP=3.73412,3.73412;SAR=2,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp;technology.ILLUMINA=1,1   GT:DP:RO:QR:AO:QA:GL    1/2:6:0:0:3,3:106,115:-16.6863,-9.82069,-7.71348,-8.53081,0,-6.4236
+        10      9343463 .       AGGA    GGGG,GGGA       184.726 .       AB=0.4,0.6;ABP=3.87889,3.87889;AC=1,1;AF=0.5,0.5;AN=2;AO=4,6;CIGAR=1X2M1X,1X3M;DP=10;DPB=10;DPRA=0,0;EPP=5.18177,4.45795;EPPR=0;GTI=0;LEN=4,1;MEANALT=2,2;MQM=27.5,56.6667;MQMR=0;NS=1;NUMALT=2;ODDS=2.15329;PAIRED=1,1;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=147,226;QR=0;RO=0;RPL=3,5;RPP=5.18177,8.80089;RPPR=0;RPR=1,1;RUN=1,1;SAF=0,5;SAP=11.6962,8.80089;SAR=4,1;SRF=0;SRP=0;SRR=0;TYPE=complex,snp;technology.ILLUMINA=1,1    GT:DP:RO:QR:AO:QA:GL    1/2:10:0:0:4,6:147,226:-26.2074,-18.6652,-17.4611,-7.83766,0,-6.03148
+        10      9362283 .       TGCC    CGCG,CGCC       376.577 .       AB=0.5625,0.4375;ABP=3.55317,3.55317;AC=1,1;AF=0.5,0.5;AN=2;AO=9,7;CIGAR=1X2M1X,1X3M;DP=16;DPB=16;DPRA=0,0;EPP=3.25157,3.32051;EPPR=0;GTI=0;LEN=4,1;MEANALT=2,2;MQM=55.3333,53.2857;MQMR=0;NS=1;NUMALT=2;ODDS=31.2564;PAIRED=0,0;PAIREDR=0;PAO=0,0;PQA=0,0;PQR=0;PRO=0;QA=307,256;QR=0;RO=0;RPL=1,2;RPP=14.8328,5.80219;RPPR=0;RPR=8,5;RUN=1,1;SAF=6,3;SAP=5.18177,3.32051;SAR=3,4;SRF=0;SRP=0;SRR=0;TYPE=complex,snp;technology.ILLUMINA=1,1   GT:DP:RO:QR:AO:QA:GL    1/2:16:0:0:9,7:307,256:-45.476,-20.9531,-18.2438,-24.8727,0,-22.7655
+        ...
 
 #### **Filtering the artifactual variants**
 
@@ -199,21 +182,21 @@ Now, use 'bcftools view' to check that the 7th column has 2 new labels: `QUALFIL
 
 `-H` is used to skip the header section and only print the data lines:
 
-        10      5893    .       C       T       55.2291 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=3.0103;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=45.5;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=0;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=75;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=0;SRR=0;TYPE=snp  GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:75:-6.72676,-0.60206,0
-        10      9569    .       C       T       8.11386 PASS    AB=0.5;ABP=3.0103;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=4;DPB=4;DPRA=0;EPP=7.35324;EPPR=3.0103;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=43.5;NS=1;NUMALT=1;ODDS=1.69704;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=65;QR=81;RO=2;RPL=2;RPP=7.35324;RPPR=3.0103;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=2;SRP=7.35324;SRR=0;TYPE=snp     GT:DP:RO:QR:AO:QA:GL    0/1:4:2:81:2:65:-4.96917,0,-6.07964
-        10      9682    .       C       T       0.00381086      QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=10.7656;GTI=0;LEN=1;MEANALT=1;MQM=25;MQMR=22.5714;NS=1;NUMALT=1;ODDS=7.03816;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=67;QR=262;RO=7;RPL=0;RPP=7.35324;RPPR=18.2106;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=6;SRP=10.7656;SRR=1;TYPE=snp GT:DP:RO:QR:AO:QA:GL    0/1:9:7:262:2:67:-1.90251,0,-11.6176
-        10      10021   .       G       A       51.1653 PASS    AB=0.75;ABP=5.18177;AC=1;AF=0.5;AN=2;AO=3;CIGAR=1X;DP=4;DPB=4;DPRA=0;EPP=3.73412;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=30;MQMR=19;NS=1;NUMALT=1;ODDS=6.50714;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=104;QR=33;RO=1;RPL=2;RPP=3.73412;RPPR=5.18177;RPR=1;RUN=1;SAF=1;SAP=3.73412;SAR=2;SRF=1;SRP=5.18177;SRR=0;TYPE=snp  GT:DP:RO:QR:AO:QA:GL    0/1:4:1:33:3:104:-6.16983,0,-0.679135
+       10      9000024 .       G       T       52.1811 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=74;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:74:-7.02402,-0.60206,0
+        10      9000056 .       CA      TC      41.7389 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=2X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=2;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=63;QR=0;RO=0;RPL=2;RPP=7.35324;RPPR=0;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=mnp;technology.ILLUMINA=1    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:63:-5.97977,-0.60206,0
+        10      9000178 .       T       A       93.4005 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=3;CIGAR=1X;DP=3;DPB=3;DPRA=0;EPP=3.73412;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=8.76405;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=119;QR=0;RO=0;RPL=2;RPP=3.73412;RPPR=0;RPR=1;RUN=1;SAF=3;SAP=9.52472;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1   GT:DP:RO:QR:AO:QA:GL    1/1:3:0:0:3:119:-11.095,-0.90309,0
+        10      9000411 .       G       C       93.3954 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=3;CIGAR=1X;DP=3;DPB=3;DPRA=0;EPP=3.73412;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=8.76405;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=119;QR=0;RO=0;RPL=3;RPP=9.52472;RPPR=0;RPR=0;RUN=1;SAF=1;SAP=3.73412;SAR=2;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1   GT:DP:RO:QR:AO:QA:GL    1/1:3:0:0:3:119:-11.0945,-0.90309,0
         ......
 
 We can also print only the variants that have been filtered by doing:
 
-        bcftools view -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |less
+        bcftools view -H -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |less
 
 And you get:
 
-        10      9682    .       C       T       0.00381086      QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=10.7656;GTI=0;LEN=1;MEANALT=1;MQM=25;MQMR=22.5714;NS=1;NUMALT=1;ODDS=7.03816;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=67;QR=262;RO=7;RPL=0;RPP=7.35324;RPPR=18.2106;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=6;SRP=10.7656;SRR=1;TYPE=snp GT:DP:RO:QR:AO:QA:GL    0/1:9:7:262:2:67:-1.90251,0,-11.6176
-        10      12889   .       T       A       0.884523        QUALFILTER      AB=0.222222;ABP=9.04217;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=7.35324;EPPR=3.32051;GTI=0;LEN=1;MEANALT=1;MQM=48.5;MQMR=41.1429;NS=1;NUMALT=1;ODDS=1.4877;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=75;QR=263;RO=7;RPL=0;RPP=7.35324;RPPR=10.7656;RPR=2;RUN=1;SAF=0;SAP=7.35324;SAR=2;SRF=3;SRP=3.32051;SRR=4;TYPE=snp        GT:DP:RO:QR:AO:QA:GL    0/1:9:7:263:2:75:-4.31305,0,-20.0551
-        10      16538   .       AGG     AG      0.014514        QUALFILTER      AB=0.666667;ABP=3.73412;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1M1D1M;DP=3;DPB=2.33333;DPRA=0;EPP=7.35324;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=19;MQMR=32;NS=1;NUMALT=1;ODDS=5.77664;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=22;QR=40;RO=1;RPL=1;RPP=3.0103;RPPR=5.18177;RPR=1;RUN=1;SAF=1;SAP=3.0103;SAR=1;SRF=0;SRP=5.18177;SRR=1;TYPE=del       GT:DP:RO:QR:AO:QA:GL    0/1:3:1:40:2:22:-0.0253243,0,-2.23306
+       10      9009050 .       A       G       0.292908        QUALFILTER      AB=0.2;ABP=10.8276;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=10;DPB=10;DPRA=0;EPP=7.35324;EPPR=4.09604;GTI=0;LEN=1;MEANALT=1;MQM=39.5;MQMR=54.75;NS=1;NUMALT=1;ODDS=2.66254;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=81;QR=256;RO=8;RPL=2;RPP=7.35324;RPPR=4.09604;RPR=0;RUN=1;SAF=0;SAP=7.35324;SAR=2;SRF=4;SRP=3.0103;SRR=4;TYPE=snp;technology.ILLUMINA=1       GT:DP:RO:QR:AO:QA:GL    0/1:10:8:256:2:81:-4.00694,0,-20.267
+        10      9009343 .       A       T       0.142595        QUALFILTER      AB=0.25;ABP=7.35324;AC=1;AF=0.5;AN=2;AO=2;CIGAR=1X;DP=8;DPB=8;DPRA=0;EPP=7.35324;EPPR=3.0103;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=42.6667;NS=1;NUMALT=1;ODDS=3.39984;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=60;QR=206;RO=6;RPL=0;RPP=7.35324;RPPR=3.0103;RPR=2;RUN=1;SAF=0;SAP=7.35324;SAR=2;SRF=0;SRP=16.0391;SRR=6;TYPE=snp;technology.ILLUMINA=1 GT:DP:RO:QR:AO:QA:GL    0/1:8:6:206:2:60:-3.29073,0,-13.9981
+        10      9009698 .       T       G       0.0499446       QUALFILTER      AB=0;ABP=0;AC=0;AF=0;AN=2;AO=2;CIGAR=1X;DP=3;DPB=3;DPRA=0;EPP=7.35324;EPPR=5.18177;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=60;NS=1;NUMALT=1;ODDS=4.46257;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=7;QR=17;RO=1;RPL=2;RPP=7.35324;RPPR=5.18177;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=1;SRP=5.18177;SRR=0;TYPE=snp;technology.ILLUMINA=1 GT:DP:RO:QR:AO:QA:GL    0/0:3:1:17:2:7:0,-0.238091,-1.03498
         ....
 
 * How many variants have been filtered?
@@ -224,17 +207,15 @@ We can use the `stats` command together with the `-f` option to generate a repor
 
 And you get:
 
-        SN      0       number of samples:      1
-        SN      0       number of records:      5498
-        SN      0       number of no-ALTs:      0
-        SN      0       number of SNPs: 4851
-        SN      0       number of MNPs: 416
-        SN      0       number of indels:       211
-        SN      0       number of others:       34
-        SN      0       number of multiallelic sites:   25
-        SN      0       number of multiallelic SNP sites:       8
-
-
+        SN	0	number of samples:	1
+        SN	0	number of records:	1042
+        SN	0	number of no-ALTs:	0
+        SN	0	number of SNPs:	910
+        SN	0	number of MNPs:	92
+        SN	0	number of indels:	36
+        SN	0	number of others:	8
+        SN	0	number of multiallelic sites:	6
+        SN	0	number of multiallelic SNP sites:	2
 
 #### **Exploring the identified variants using IGV**
 
@@ -250,18 +231,28 @@ You will need to load in `IGV` the FASTA file containing the chromosome 10 seque
 
 Look for you file and open it.
 
+![load_genome_igv1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_genome1.png)
+
 Now, load the `GTF` file containing the rice gene annotations for chromosome 10:
 
 ![load_annotation_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation.png)
 
-![annotation_view_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/annotation_view.png)
+And look for your file and open it.
+
+![load_annotation1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation1.png)
 
 You will see the new track with genes annotated in chromosome 10
+
+![annotation_view_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/annotation_view.png)
 
 Now, load the `VCF` file containing the variants:
 ![load_variants_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_alignments.png)
 
-![load_variants1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants1.png)
+Look for the file and open it:
+
+![look_4_vcf_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/look_4_vcf.png)
+
+![variants_overallview_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variants_overallview.png)
 
 Now, you can click on a particular variant (red vertical bar) to display information such as:
 
@@ -273,32 +264,44 @@ Now, you can click on a particular variant (red vertical bar) to display informa
 * Variant attributes
 * etc ...
 
-![load_variants2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants2.png)
+![vt_gen_attrbs_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/vt_gen_attrbs.png)
 
 You can also click on the blue vertical bar to display genotype information and attributes:
 
-![load_variants3_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_variants3.png)
+![variant_gt_attrbs_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variant_gt_attrbs.png)
 
-Let's examine in detail a SNP and an INDEL variant. For this, enter the following genomic coordinate in your navigate box:
+Let's examine in detail an INDEL variant. For this, enter the following genomic coordinate in your navigate box:
 
-        10:16,532-16,568
+        10:9,058,200-9,058,229
 
 Click on the variant on the left side of the screen:
 
 ![indel_example1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example1.png)
 
-You can see that this is a 1bp deletion (AGG->AG) that have an alternate allele_count=1. Which means it is an heterozygous variant, this can be confirmed by clicking on the genotype information bar:
+You can see that this is a 1bp insertion (CAA->CAAA) that have an alternate allele_count=2. Which means it is an homozygous variant, this can be confirmed by clicking on the genotype information bar:
 
 ![indel_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example2.png)
 
-Now, click on the variant on the right side of the screen:
+Now let's visualize a SNP, for this enter the following genomic coordinate in the navigate box:
+
+        10:13,979,344-13,979,383
 
 ![snp_example1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/snp_example1.png)
 
-You can see that this is a single nucleotide substitution (T->A) that have an alternate allele_count=2. Which means it is a homozygous variant, this can be confirmed by clicking on the genotype information bar:
+You can see that this is a single nucleotide substitution (C->T) that have an alternate allele_count=1 with an allele frequency of 0.5. Which means it is a heterozygous variant, this can be confirmed by clicking on the genotype information bar:
 
 ![snp_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/snp_example2.png)
 
+* Examining the aligned reads supporting a certain variant
 
+IGV is really useful for examining the aligned reads in your alignment file supporting a certain variant. For this, load the `BAM` file that was previously uploaded to IGV in the alignment section of this course:
 
+![load_mini_bam_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_mini_bam.png)
 
+Now, go to the following coordinate:
+
+        10:10,000,166-10,000,226
+
+You can see the SNP variant and the reads supporting this SNP, you can also click on the coverage track and see that there are a total of 9 reads covering this position, 3 out had the alternate allele `G` and 6 out have the reference allele `A`:
+
+![variant_with_reads](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variant_with_reads.png)
