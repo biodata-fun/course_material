@@ -47,6 +47,16 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
 
+* Open a file to see its contents using the `less` UNIX command:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # enter the `less` command followed by the file name you want to
+        # open:
+        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+
+
 ## Log in the VirtualBox machine
 
         user: m_jan2020
@@ -60,7 +70,7 @@ The preprocessing step of the reference genome needs to be done so it can be use
 
 Now, you can have a look to the file contents using the `less` UNIX program:
 
-         m_jan2020@mjan2020VirtualBox:~$ less Oryza_sativa.IRGSP-1.0.dna.toplevel.fa
+         m_jan2020@mjan2020VirtualBox:~$ less Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
         
         >10 dna:chromosome chromosome:IRGSP-1.0:10:1:23207287:1 REF
         NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
@@ -90,7 +100,7 @@ Now, you can have a look to the file contents using the `less` UNIX program:
 
 Let's create a Samtools index file for this FASTA file. Samtools is going to be used a lot during this course and an index is necessary for extracting a subsequence from the reference sequence:
 
-        samtools faidx Oryza_sativa.IRGSP-1.0.dna.toplevel.fa
+        samtools faidx Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
 Check that you have a new file with the `.fai` suffix
 
@@ -141,7 +151,7 @@ In order to build this index move to the directory containing the FASTA file:
 
 And enter the `bwa index` command in your terminal:
 
-        m_jan2020@mjan2020VirtualBox:~$ bwa index /path/to/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa
+        m_jan2020@mjan2020VirtualBox:~$ bwa index Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
 Index construction takes a while but the good thing is that this index can be resued for different alignment runs.
 Once `bwa index` has finished check the new files that have been generated:
