@@ -1,4 +1,4 @@
-# IGSR - Alignment section
+# IGSR - Alignment of Next-Generation sequencing data
 This part of the course covers the alignment or mapping of the Next generation sequencing (NGS) data [here](https://en.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)/Alignment) generated from a certain organism for which
 there is already a reference sequence for the genome available.
 
@@ -139,9 +139,9 @@ You should see something similar to:
 
 ![fastqc](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/fastqc.png)
 
-## Alignment
+## Alignment with BWA
 
-<mark>Reference material can be found [here]</mark>(https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery)
+### Building an index for the reference genome
 
 In this course we are going to use [BWA](http://bio-bwa.sourceforge.net/) for aligning the short reads to the reference. There are other reading mapping tools, but BWA is one of the most popular and the one we have the most experience with in our group. This tool, requires a preprocessing step consisting on building an index from the reference FASTA sequence for chromosome 10 that has been mentioned previuosly. 
 
