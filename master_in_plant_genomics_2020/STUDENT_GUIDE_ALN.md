@@ -7,6 +7,8 @@ which is an international effort to resequence a core collection of >3000 rice a
 
 The data from the 3000 Rice genomes project is openly available at the European Nucleotide Archive [ENA](https://www.ebi.ac.uk/ena/browser/home). It is accessible using the following sudy id [PRJEB6180](https://www.ebi.ac.uk/ena/browser/view/PRJEB6180)
 
+[click on this link](#my-multi-word-header)
+
 ## Unix commands used in this course
 Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use:
 
@@ -442,5 +444,5 @@ When you have finished working you save your session by doing:
 
 
 
-
+### My Multi Word Header
 
