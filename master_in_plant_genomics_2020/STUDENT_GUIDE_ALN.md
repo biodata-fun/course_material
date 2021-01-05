@@ -255,9 +255,6 @@ And you get:
         -rw-rw-r-- 1 m_jan2020 m_jan2020  91M Dec  3 14:48 SAMEA2569438.chr10.sam
         -rw-rw-r-- 1 m_jan2020 m_jan2020  13M Dec  3 14:50 SAMEA2569438.cram
 
-
-<mark>CRAM format reference (https://www.internationalgenome.org/faq/what-are-cram-files/)</mark>
-
 The alignment files in the `SAM` format (format specification is described [here](https://samtools.github.io/hts-specs/SAMv1.pdf)) start with an optional header section followed by the alignment lines.
 
  All header lines start with '@' and are used to represent different metadata elements like the reference version and the chromosome sequence ids used in the alignment, the technology used for generating the sequence data, if the alignment file is sorted or unsorted, etc ... 
@@ -357,7 +354,7 @@ The alignment file can contain reads that are duplicates. These reads are origin
 
          m_jan2020@mjan2020VirtualBox:~$ picard MarkDuplicates -Xms1g I=SAMEA2569438.chr10.sorted.reheaded.bam O=SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
 
-With use option `M` so `MarkDuplicates` generates a text file with metrics on the number of reads duplicates. This file is named ` SAMEA2569438.chr10.metrics.txt` in this case. 
+We will use the option `M` so `MarkDuplicates` will generate a text file with metrics on the number of reads duplicates. This file is named ` SAMEA2569438.chr10.metrics.txt` in this case. 
 
 Let's open this metrics file:
 
