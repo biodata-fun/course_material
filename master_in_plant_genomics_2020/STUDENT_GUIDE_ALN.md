@@ -1,4 +1,6 @@
-# IGSR - Alignment of Next-Generation sequencing data
+IGSR - Alignment of Next-Generation sequencing data
+===================================================
+
 This part of the course covers the alignment or mapping of the Next generation sequencing (NGS) data [here](https://en.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)/Alignment) generated from a certain organism for which
 there is already a reference sequence for the genome available.
 
@@ -439,11 +441,4 @@ When you have finished working you save your session by doing:
 ![save_session1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session1.png)
 
 ![save_session2](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session2.png)
-
-<h2 id="memmove-able">memmove-able</h2>
-
-afhjdafkjhfdkdajfhadkjfhakldjhf.  
-adkfhadkfjhaskfjh  
-adkfhadkfhakfjhakfljh  
-hakjadfhkadhfalskdh  
 
