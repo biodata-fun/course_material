@@ -373,6 +373,8 @@ We can display the reads that are duplicates using samtools view in combination 
 ### **Viewing the aligned reads using IGV**
 The Integrative Genomics Viewer [IGV](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the alignments we have generated. In this example we will fetch the alignments for a specific region in chromosome 10.
 
+#### Extracting a genomic sub-region for IGV
+
 First, you need to move to the directory where we will extract a sub-region from the SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam file that was generated in the previous section:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/aln_visualization
@@ -381,7 +383,7 @@ And again, we will use `samtools view` along with the region we want to extract.
 
         m_jan2020@mjan2020VirtualBox:~$ samtools index /home/m_jan2020/course/alignment/postprocessing/SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam
 
- Then we extract all the alignments for the `10:10000000-11000000` region that are correct, which means that both members of the read pair are correctly mapped. For this, we use the SAM flag = 2 and `samtools view`:
+ Then we extract all the alignments for the `10:10000000-11000000` region that are correct, which means that both members of the read pair are correctly mapped. For this, we use the SAM bitwise flag = 2 and `samtools view`:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools view -f 2 /home/m_jan2020/course/alignment/postprocessing/SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam 10:10000000-11000000 -b -o SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
