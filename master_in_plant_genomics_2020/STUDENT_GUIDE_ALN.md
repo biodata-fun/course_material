@@ -375,7 +375,7 @@ The Integrative Genomics Viewer [IGV](http://software.broadinstitute.org/softwar
 
 ### Extracting a certain genomic sub-region for IGV
 
-First, you need to move to the directory where we will extract a sub-region from the SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam file that was generated in the previous section:
+First, you need to move to the directory where we will extract a sub-region from the `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam` file that was generated in the previous section:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/aln_visualization
 
