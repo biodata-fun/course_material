@@ -74,11 +74,8 @@ This command pipes the output of FreeBayes to `bgzip`, which is a special compre
 #### **Understanding the FreeBayes output VCF**
 After running FreeBayes, you will get a compressed vcf file named `SAMEA2569438.chr10.vcf.gz` containing the identified variants. The complete `VCF` specification with an explanation for each of the pieces of information in the file can be found [here](https://samtools.github.io/hts-specs/VCFv4.3.pdf). 
 
-. It contains meta-information lines (prefixed
-with “##”), a header line (prefixed with “#”), and data lines each containing information about a position in the
-genome and genotype information on samples for each position (text fields separated by tabs).
+The most relevant sections for us are the meta-information lines (prefixed with `##`), the header line (prefixed with `#`) and then the lines containing information about the variants. These data lines will contain the following text fields separated by tabs:  
 
-The most relevant sections for us are the meta-information lines (prefixed with `##`), the header line (prefixed with `#`) and then the lines containing information about the variants. These data lines will contain the following fields: 
 | Col  | Field       | Brief description     |
 | -----| ----------- | --------------------- | 
 | 1    | CHROM       | Chromosome where the genetic variant was found   |
