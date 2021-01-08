@@ -9,8 +9,19 @@ which is an international effort to resequence a core collection of >3000 rice a
 
 The data from the 3000 Rice genomes project is openly available at the European Nucleotide Archive [ENA](https://www.ebi.ac.uk/ena/browser/home). It is accessible using the following sudy id [PRJEB6180](https://www.ebi.ac.uk/ena/browser/view/PRJEB6180)
 
+## Log in the Ubuntu virtual machine
+
+        user: m_jan2020
+        pwd: m_jan2020
+
+## Open a Terminal window in the Ubuntu virtual machine
+A terminal in Linux is an interface we can use to enter text commands, it will be the interface we will use to run most of the bioinformatics tools shown in this course. 
+To open a terminal click on the `Terminal` icon you see in your screen:
+
+![how_to_open_terminal](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/how_to_open_terminal.png)
+
 ## Unix commands used in this course
-Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use:
+Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use during this course:
 
 * Print the current working directory [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm)
 
@@ -57,12 +68,6 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         # enter the `less` command followed by the file name you want to
         # open:
         (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
-
-
-## Log in the VirtualBox machine
-
-        user: m_jan2020
-        pwd: m_jan2020
 
 ## Preparing the reference genome
 

@@ -3,6 +3,17 @@ IGSR - Variant calling
 
 In the first part of the course, we used the sequencing data generated in the [3000 Rice Genomes project](http://iric.irri.org/resources/3000-genomes-project) for one particular sample with ENA accession id of [SAMEA2569438](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438), to generate an analysis-ready BAM alignment file. This part of the course starts from this alignment file and will generate a VCF file containing germ-line variants for chromosome 10. 
 
+## Log in the VirtualBox machine
+
+        user: m_jan2020
+        pwd: m_jan2020
+
+## Open a Terminal window in the Ubuntu virtual machine
+A terminal in Linux is an interface we can use to enter text commands, it will be the interface we will use to run most of the bioinformatics tools shown in this course. 
+To open a terminal click on the `Terminal` icon you see in your screen:
+
+![how_to_open_terminal](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/how_to_open_terminal.png)
+
 ## Unix commands used in this course
 Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use:
 
@@ -43,11 +54,6 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
 
-## Log in the VirtualBox machine
-
-        user: m_jan2020
-        pwd: m_jan2020
-
 ## Variant calling
 Variant calling is the process that identifies variants from sequence data ([see](https://www.ebi.ac.uk/training-beta/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.)).
 It starts with the alignment of the sequencing data in the `FASTQ` files that has been explained in the first section of this course. Then, we can use a variant discovery tool to identify the germline variants. 
@@ -71,7 +77,7 @@ And then enter:
 
 This command pipes the output of FreeBayes to `bgzip`, which is a special compression/decompression program that is part of SAMTools. It is better to compress the VCF to make the file size smaller and also to use some of the `BCFTools` commands that are discussed later in this section.
 
-#### **Understanding the FreeBayes output VCF**
+#### **Understanding the output VCF**
 After running FreeBayes, you will get a compressed vcf file named `SAMEA2569438.chr10.vcf.gz` containing the identified variants. The complete `VCF` specification with an explanation for each of the pieces of information in the file can be found [here](https://samtools.github.io/hts-specs/VCFv4.3.pdf). 
 
 The most relevant sections for us are the meta-information lines (prefixed with `##`), the header line (prefixed with `#`) and then the lines containing information about the variants. These data lines will contain the following text fields separated by tabs:  
