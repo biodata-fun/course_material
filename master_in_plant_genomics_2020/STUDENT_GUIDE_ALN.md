@@ -68,6 +68,7 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         # enter the `less` command followed by the file name you want to
         # open:
         (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # press 'q' if you want to exit
 
 ## Preparing the reference genome
 
