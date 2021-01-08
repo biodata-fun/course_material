@@ -272,7 +272,7 @@ And you get:
 
 * How many variants have been filtered?
 
-We can use the `stats` command together with the `-f` option to generate a report taken into account only the filtered variants:
+We can use the `stats` command together with the `-f` option and the `QUALFILTER` label to generate a report taken into account only the filtered variants:
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools stats -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |grep ^SN
 
@@ -287,6 +287,24 @@ And you get:
         SN	0	number of others:	8
         SN	0	number of multiallelic sites:	6
         SN	0	number of multiallelic SNP sites:	2
+
+* How many variants remain after the filtering process?
+
+We need to use the `stats` command with the `PASS` label this time to generate a new report with the variants that have not been filtered:
+
+        m_jan2020@mjan2020VirtualBox:~$ bcftools stats -f PASS SAMEA2569438.chr10.filt.vcf.gz |grep ^SN
+
+You get:
+
+        SN	0	number of samples:	1
+        SN	0	number of records:	30479
+        SN	0	number of no-ALTs:	0
+        SN	0	number of SNPs:	25442
+        SN	0	number of MNPs:	2392
+        SN	0	number of indels:	2390
+        SN	0	number of others:	333
+        SN	0	number of multiallelic sites:	91
+        SN	0	number of multiallelic SNP sites:	4
 
 #### **Exploring the identified variants using IGV**
 
