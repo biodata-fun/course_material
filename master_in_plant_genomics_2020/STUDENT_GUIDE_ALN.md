@@ -70,6 +70,31 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
         # press 'q' if you want to exit
 
+* Output redirection:  
+In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
+Example:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # the output of 'ls' will be redirected to the file 'listing'
+        m_jan2020@mjan2020VirtualBox:~/course/data$ ls -l > listing
+
+        # examine the contents of 'listing'
+         m_jan2020@mjan2020VirtualBox:~/course/data$ less listing
+
+* Piping  
+ Is a form of redirection to transfer the standard output of one command/program to another command/program
+ for further processing. The different commands in the pipe are connected using the pipe character `|`. In this
+ way we can combine 2 or more commands. Pipes are unidirectional i.e., data flows from left to right.  
+ Examples:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # counting the number of files in a directory
+        m_jan2020@mjan2020VirtualBox:~$ ls | wc -l
+
 ## Sequencing data for sample SAMEA2569438 
 In this course we are going to align 2 files in the [FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) format against the Rice reference genome. Each of the files contain the forward and reverse reads from the paired-end sequencing experiment. The reads in each of the files come from sample `SAMEA2569438` of the 3000 Rice genomes project (see [here](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438)). First thing we are going to do is to check the quality of the sequencing reads.
 

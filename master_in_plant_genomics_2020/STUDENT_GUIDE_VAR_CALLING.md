@@ -15,7 +15,7 @@ To open a terminal click on the `Terminal` icon you see in your screen:
 ![how_to_open_terminal](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/how_to_open_terminal.png)
 
 ## Unix commands used in this course
-Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use:
+Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use during this course:
 
 * Print the current working directory [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm)
 
@@ -24,8 +24,8 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
 
 * Change directory [cd](https://www.tutorialspoint.com/unix_commands/cd.htm)
 
-        # go to the variant calling dir
-        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/vcalling
+        # go to the alignment dir
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/
         
         # move up one folder
         m_jan2020@mjan2020VirtualBox:~$ cd ../
@@ -53,6 +53,41 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         total 23M
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
+
+* Open a file to see its contents using the `less` UNIX command:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # enter the `less` command followed by the file name you want to
+        # open:
+        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # press 'q' if you want to exit
+
+* Output redirection:  
+In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
+Example:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # the output of 'ls' will be redirected to the file 'listing'
+        m_jan2020@mjan2020VirtualBox:~/course/data$ ls -l > listing
+
+        # examine the contents of 'listing'
+         m_jan2020@mjan2020VirtualBox:~/course/data$ less listing
+
+* Piping  
+ Is a form of redirection to transfer the standard output of one command/program to another command/program
+ for further processing. The different commands in the pipe are connected using the pipe character `|`. In this
+ way we can combine 2 or more commands. Pipes are unidirectional i.e., data flows from left to right.  
+ Examples:
+
+        # go to the following directory
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
+
+        # counting the number of files in a directory
+        m_jan2020@mjan2020VirtualBox:~$ ls | wc -l
 
 ## Variant calling
 Variant calling is the process that identifies variants from sequence data ([see](https://www.ebi.ac.uk/training-beta/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.)).
