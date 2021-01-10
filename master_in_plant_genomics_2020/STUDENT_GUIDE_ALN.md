@@ -68,7 +68,13 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         # enter the `less` command followed by the file name you want to
         # open:
         (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # press Ctrl+F to go forward one window
+        # press Ctrl+B to go back one window
         # press 'q' if you want to exit
+
+Now, make `less` to print out line number information by doing:
+
+        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
 
 * Output redirection:  
 In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
@@ -331,6 +337,17 @@ And you get:
        1755 + 0 singletons (0.51% : N/A)
        0 + 0 with mate mapped to a different chr
        0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+* Print the base coverage per position  
+
+For this we can use `samtools mpileup`. The output of this command is explained [here](http://www.htslib.org/doc/samtools-mpileup.html).  
+You can `samtools mpileup` by doing:
+
+        m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam |less
+
+Now, let's try a combination of commands that is more complex to print all positions having a coverage >=10:
+
+        m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam | awk '{if ($4>=20) print}' | less
 
 ### Alignment post-processing
 The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following module of this course

@@ -62,7 +62,13 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         # enter the `less` command followed by the file name you want to
         # open:
         (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # press Ctrl+F to go forward one window
+        # press Ctrl+B to go back one window
         # press 'q' if you want to exit
+
+Now, make `less` to print out line number information by doing:
+
+        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
 
 * Output redirection:  
 In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
