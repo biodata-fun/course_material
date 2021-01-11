@@ -1,8 +1,7 @@
 IGSR - Alignment of Next-Generation sequencing data
 ===================================================
 
-This part of the course covers the alignment or mapping of the Next generation sequencing (NGS) data generated from a certain organism for which
-there is already a reference sequence for the genome available.
+This part of the course covers the alignment or mapping of the Next generation sequencing (NGS) data generated from a given organism for which a reference sequence for the genome already exists.
 
 In this course, we will use the genomic data generated for [_Oryza sativa_ Japonica](https://plants.ensembl.org/Oryza_sativa/Info/Index) (rice) in a project called the [3000 Rice genomes project](http://iric.irri.org/resources/3000-genomes-project),
 which is an international effort to resequence a core collection of >3000 rice accessions from 92 countries. We will use the re-sequencing data generated in this project to identify genomic variants in this plant species.
