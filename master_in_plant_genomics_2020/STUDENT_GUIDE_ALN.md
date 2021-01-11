@@ -7,7 +7,7 @@ there is already a reference sequence for the genome available.
 In this course, we will use the genomic data generated for [_Oryza sativa_ Japonica](https://plants.ensembl.org/Oryza_sativa/Info/Index) (rice) in a project called the [3000 Rice genomes project](http://iric.irri.org/resources/3000-genomes-project),
 which is an international effort to resequence a core collection of >3000 rice accessions from 92 countries. We will use the re-sequencing data generated in this project to identify genomic variants in this plant species.
 
-The data from the 3000 Rice genomes project is openly available at the European Nucleotide Archive [ENA](https://www.ebi.ac.uk/ena/browser/home). It is accessible using the following sudy id [PRJEB6180](https://www.ebi.ac.uk/ena/browser/view/PRJEB6180)
+The data from the 3000 Rice genomes project is openly available at the European Nucleotide Archive [ENA](https://www.ebi.ac.uk/ena/browser/home). It is accessible using the following study id [PRJEB6180](https://www.ebi.ac.uk/ena/browser/view/PRJEB6180)
 
 ## Log in the Ubuntu virtual machine
 
@@ -337,6 +337,8 @@ And you get:
        1755 + 0 singletons (0.51% : N/A)
        0 + 0 with mate mapped to a different chr
        0 + 0 with mate mapped to a different chr (mapQ>=5)
+
+The explanation of this report can be found in the [samtools stats](http://www.htslib.org/doc/samtools-stats.html#:~:text=DESCRIPTION,visualized%20graphically%20using%20plot%2Dbamstats.) manual page.
 
 * Print the base coverage per position  
 

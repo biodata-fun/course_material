@@ -281,7 +281,12 @@ The process for identifiying variants is not perfect, and FreeBayes and in gener
 
 There are several filtering tools and strategies available for variant filtering, with varying degrees of complexity and sophistication. However, in this course we will use a very simple, yet effective approach, which consists of using the quality value assigned by FreeBayes as a proxy to estimate the likelihood of a variant being real. The lower the quality value, the less likely it is that a variant is real.
 
-In this course, we will use `bcftools filter` with a hard cut-off value of `<=1` to flag the variants that have a low quality. For this enter the following in your terminal:
+In this course, we will use `bcftools filter` with a hard cut-off value of `<=1` to flag the variants that have a low quality.
+For this, first move to the directory where you ran Freebayes if you are not already there:
+
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/vcalling
+
+And  enter the following in your terminal:
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools filter -sQUALFILTER -e'QUAL<1' SAMEA2569438.chr10.vcf.gz -o SAMEA2569438.chr10.filt.vcf.gz -Oz
 
