@@ -19,15 +19,22 @@ To open a terminal click on the `Terminal` icon you see in your screen:
 
 ![how_to_open_terminal](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/how_to_open_terminal.png)
 
-## Unix commands used in this course
-Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use during this course:
+## Activate the conda environment used in this course  
+[Conda](https://docs.conda.io/en/latest/) is a package and environment management system that we have used in this course to install all the bioinformatics programs.  
+To start using Conda you need first to activate the course environment by entering the following command in the terminal window you have just opened:
 
-* Print the current working directory [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm)
+![conda_activate](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/conda_activate.png)
+
+## Unix commands used in this course
+Most of the bioinformatics tools used for genomic data analysis run in Unix/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. You should also know how to list the contents of a directory or how to print the contents of a given text file.  
+Here are some of the basic commands we will use during this course:
+
+* Print the current working directory with the [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm) command
 
         m_jan2020@mjan2020VirtualBox:~$ pwd
         /home/m_jan2020
 
-* Change directory [cd](https://www.tutorialspoint.com/unix_commands/cd.htm)
+* Change directory ([cd](https://www.tutorialspoint.com/unix_commands/cd.htm))
 
         # go to the alignment dir
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/
@@ -44,7 +51,7 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         m_jan2020@mjan2020VirtualBox:~$ pwd
         /home/m_jan2020
 
-* Listing directory contents [ls](https://www.tutorialspoint.com/unix_commands/ls.htm)
+* Listing the directory contents ([ls](https://www.tutorialspoint.com/unix_commands/ls.htm))
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
@@ -59,52 +66,51 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
 
-* Open a file to see its contents using the `less` UNIX command:
+* Open a file to see its contents using the (`less`) UNIX command:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # enter the `less` command followed by the file name you want to
-        # open:
-        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # enter the `less` command followed by the file name you want to open:
+        m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
         # press Ctrl+F to go forward one window
         # press Ctrl+B to go back one window
         # press 'q' if you want to exit
 
-Now, make `less` to print out line number information by doing:
+* Now, make (`less`) to print out the line number information by doing:
 
-        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
+        m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
 
 * Output redirection:  
-In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
+In Linux, output redirection means that we can redirect the STDOUT of a given command to a file. For this, we use the (`>`) symbol.   
 Example:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # the output of 'ls' will be redirected to the file 'listing'
+        # the output of 'ls' will be redirected to the file named 'listing'
         m_jan2020@mjan2020VirtualBox:~/course/data$ ls -l > listing
 
         # examine the contents of 'listing'
          m_jan2020@mjan2020VirtualBox:~/course/data$ less listing
 
 * Piping  
- Is a form of redirection to transfer the standard output of one command/program to another command/program
- for further processing. The different commands in the pipe are connected using the pipe character `|`. In this
- way we can combine 2 or more commands. Pipes are unidirectional i.e., data flows from left to right.  
+ It is a form of redirection that transfers the standard output of one command/program to another command/program for further processing. The different commands in the pipe are connected using the pipe character (`|`). In this
+ way we can combine 2 or more commands. Pipes are unidirectional, i.e. data flows from left to right.  
  Examples:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # counting the number of files in a directory
+        # count the number of files in a directory
         m_jan2020@mjan2020VirtualBox:~$ ls | wc -l
 
 ## Sequencing data for sample SAMEA2569438 
-In this course we are going to align 2 files in the [FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) format against the Rice reference genome. Each of the files contain the forward and reverse reads from the paired-end sequencing experiment. The reads in each of the files come from sample `SAMEA2569438` of the 3000 Rice genomes project (see [here](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438)). First thing we are going to do is to check the quality of the sequencing reads.
+In this course we are going to align 2 files in the [FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) format to the rice reference genome. Each of the files contain the forward and the reverse reads from the paired-end sequencing experiment. These reads have been generated for the sample with id (`SAMEA2569438`) of the 3000 Rice genomes project (see [here](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438)).  
+The first thing we are going to do is check the quality of the sequencing reads.
 
 ### Quality control of the FASTQ files
-For this, we will use [FASTQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) with our FASTQ files.
+For this, we will use [FASTQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) with our FASTQ files.  
 First, move to the directory containing the FASTQ files:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
@@ -117,11 +123,11 @@ And check that the `FASTQ` files are there:
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
 
-You can run now `FASTQC`:
+You can now run `FASTQC`:
 
         m_jan2020@mjan2020VirtualBox:~/course/data$ fastqc SAMEA2569438.chr10_1.fastq.gz SAMEA2569438.chr10_2.fastq.gz
 
-And then open the two `.htlm` files using `firefox`:
+And then open the two `html` files using `firefox`:
 
         m_jan2020@mjan2020VirtualBox:~/course/data$ firefox SAMEA2569438.chr10_1_fastqc.html SAMEA2569438.chr10_2_fastqc.html
 
@@ -131,14 +137,15 @@ You should see something similar to:
 
 ## Alignment with BWA
 
-## Preparing the reference genome for Samtools
+### Preparing the reference genome for Samtools
 
-[Samtools](http://www.htslib.org/doc/samtools.html) is going to be used in this course to manipulate the alignments generated by `bwa`, Samtools needs that the reference genome used for generating the alignments is indexed.  
-For this, move to the folder where we have prepared a reference file in the [FASTA](https://en.wikipedia.org/wiki/FASTA_format) format for only the chromosome 10:
+[Samtools](http://www.htslib.org/doc/samtools.html) is going to be used in this course to manipulate the alignments generated by `bwa`, and Samtools needs the reference genome used for generating the alignments to be indexed.  
+For this, move to the folder where we have prepared a reference file in [FASTA](https://en.wikipedia.org/wiki/FASTA_format) format only for chromosome 10:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/reference
 
-And now let's create a Samtools index file for this FASTA file. Samtools is going to be used a lot during this course and an index is necessary for quickly extracting a subsequence from the reference sequence:
+And now let's create a Samtools index file for this FASTA.  
+ Samtools is going to be used a lot during this course and an index is necessary for quickly extracting a subsequence from the reference sequence:
 
         samtools faidx Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
@@ -152,9 +159,10 @@ Check that you have a new file with the `.fai` suffix
 
 ### Building an index for the reference genome
 
-In this course we are going to use [BWA](http://bio-bwa.sourceforge.net/) for aligning the short reads to the reference. There are other reading mapping tools, but BWA is one of the most popular and the one we have the most experience with in our group. This tool, requires a preprocessing step consisting on building an index from the reference FASTA sequence for chromosome 10 that has been mentioned previuosly. 
+In this course we are going to use [BWA](http://bio-bwa.sourceforge.net/) for aligning the short reads to the reference. There are other reading mapping tools, but BWA is one of the most popular and with which we have the most experience in our group.  
+This tool requires a preprocessing step consisting on building an index for the same chromosome 10 FASTA sequence that has been mentioned previously. 
 
-In order to build this index move to the directory containing the FASTA file:
+To build this index, move to the directory that contains the FASTA file:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/reference/
 
@@ -162,8 +170,8 @@ And enter the `bwa index` command in your terminal:
 
         m_jan2020@mjan2020VirtualBox:~$ bwa index Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
-Index construction takes a while but the good thing is that this index can be resued for different alignment runs.
-Once `bwa index` has finished check the new files that have been generated:
+Building the index takes a while, but the good thing is that this index can be reused for different alignment runs.  
+Once `bwa index` has finished, check that the new files have been generated:
 
         m_jan2020@mjan2020VirtualBox:~/course/reference$ ls -lh
         -rw-rw-r-- 1 m_jan2020 m_jan2020  23M Nov 23 11:23 Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
@@ -175,11 +183,11 @@ Once `bwa index` has finished check the new files that have been generated:
         -rw-rw-r-- 1 m_jan2020 m_jan2020  12M Dec  3 14:26 Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa.sa
 
 ### BWA mem
-BWA has different run options. Enter this in your terminal:
+The BWA mapper has different execution options, this can be verified by entering the following in your terminal:
 
     m_jan2020@mjan2020VirtualBox:~$ bwa
 
-You will get something very similar to:
+You will see something very similar to:
 
     Program: bwa (alignment via Burrows-Wheeler transformation)
     Version: 0.7.17-r1188
@@ -208,24 +216,24 @@ You will get something very similar to:
       `aln/samse/sampe'. If you are not sure which to use, try `bwa mem'
       first. Please `man ./bwa.1' for the manual.
 
-It is widely accepted that the alignment for reads having a length: 70 bp to 1Mb is `BWA mem`, as it is more accurate and faster than the other alignment algorithms included with `BWA`
+It is widely accepted that the alignment option used for reads that are 70 bp to 1Mb in length is `BWA mem`, as it is more accurate and faster than the other alignment options included with `BWA`.
 
- To run `BWA` first you need to move to the directory where the output will be generated:
+ To run `BWA`, first you need to move to the directory where the output will be generated:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment
  
- And now enter the following if you want to get an aligment in the BAM format:
+ Now, enter the following to get an alignment in the BAM format:
 
-        bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -b -o SAMEA2569438.chr10.bam
+        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -b -o SAMEA2569438.chr10.bam
 
-You can check that `BWA` is running by using the `top` Unix command. For this, first check what is your username in your machine:
+You can verify that `BWA` is running by using the `top` Unix command. For this, first check what your username is on your machine:
 
         m_jan2020@mjan2020VirtualBox:~$ whoami
         m_jan2020
-Now, you can use the `top` commamd to obtain a summary of the processes that user `m_jan2020` is running in the system:
+Now, you can use the `top` command to obtain a summary of the processes that user `m_jan2020` is running in the system:
 
         top -u m_jan2020
-You should see something similar to what I got in my system:
+You should see something similar to what I obtain in my system:
         
         top - 17:10:34 up  2:43,  1 user,  load average: 1.57, 0.69, 0.70
         Tasks: 180 total,   1 running, 179 sleeping,   0 stopped,   0 zombie
@@ -240,17 +248,17 @@ You should see something similar to what I got in my system:
 
 If you want to obtain an alignment file in the `SAM` format enter the following:
 
-        bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz -o SAMEA2569438.chr10.sam
+        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz -o SAMEA2569438.chr10.sam
 
-Finally, if you want to generate an alignment in the CRAM format do the following:
+Finally, if you want to generate an alignment in the CRAM format, do the following:
 
-        bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -C -T /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa > SAMEA2569438.cram
+        m_jan2020@mjan2020VirtualBox:~$ bwa mem /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/data/SAMEA2569438.chr10_1.fastq.gz /home/m_jan2020/course/data/SAMEA2569438.chr10_2.fastq.gz |samtools view -C -T /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa > SAMEA2569438.cram
 
 ### The SAM alignment format
-The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format))), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
-This format is not compressed and it is preferable to convert it to its binary equivalent (BAM) or to the ultra-compressed equivalent called CRAM to facilitate its handling and storage.
+The Sequence Alignment Format (SAM) is a text-based format (check the Wikipedia [entry](https://en.wikipedia.org/wiki/SAM_(file_format)) for more information), used for representing the alignment of the short reads in the FASTQ files to the reference sequence.
+This format is not compressed and it is preferable to convert it to its binary equivalent (BAM) or to its ultra-compressed equivalent called CRAM to facilitate its handling and storage.
 
-Compare the diferent file sizes for each of the alignment files generated in the previous section by listing the directory content:
+Compare the diferent file sizes for each of the alignment files generated in the previous section by listing the directory contents:
 
         m_jan2020@mjan2020VirtualBox:~$ ls -lh
 
@@ -262,9 +270,9 @@ And you get:
         -rw-rw-r-- 1 m_jan2020 m_jan2020  91M Dec  3 14:48 SAMEA2569438.chr10.sam
         -rw-rw-r-- 1 m_jan2020 m_jan2020  13M Dec  3 14:50 SAMEA2569438.cram
 
-The alignment files in the `SAM` format (format specification is described [here](https://samtools.github.io/hts-specs/SAMv1.pdf)) start with an optional header section followed by the alignment lines.
+The alignment files in the `SAM` format (click [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for the format specification) start with an optional header section followed by the alignment lines.
 
- All header lines start with '@' and are used to represent different metadata elements like the reference version and the chromosome sequence ids used in the alignment, the technology used for generating the sequence data, if the alignment file is sorted or unsorted, etc ... 
+ All header lines start with '@' and are used to represent different metadata elements such as the reference version and the chromosome sequence IDs used in the alignment, the technology used to generate the sequence data, if the alignment file is sorted or not, etc ... 
  
  The alignment lines are characterized by having 11 mandatory fields:
 
@@ -286,38 +294,45 @@ The alignment files in the `SAM` format (format specification is described [here
 
 [Samtools](http://www.htslib.org/doc/samtools.html) is a command line tool used to interact and manipulate the SAM-related alignment files. 
 
-These are some of the set of commands that are more relevant for this course:
+You can practise  the commands that are more relevant for this course by going to the directory where `bwa` was run:
+
+        m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment
+
+And entering the following commands:
 
 *  print the alignment to stdout
 
-         m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.bam 
+         m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.bam | less
         
 * print the header section
 
          m_jan2020@mjan2020VirtualBox:~$ samtools view -H SAMEA2569438.chr10.bam
 
-* And if you want to get the alignments on a particular genomic region:
+* And if you want to get the alignments in a particular genomic region:
 
          m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.bam 10:10000000-10001000
         [main_samview] random alignment retrieval only works for indexed BAM or CRAM files.
 
-This does not work because you need to sort and index the `.bam` file first. For this we are going to move to a different folder to keep things tidy:
+This does not work because first you need to sort and build an index for the `bam` file.  
+To do this, we are going to move to a different folder to keep things in order:
 
          m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/postprocessing
 
          m_jan2020@mjan2020VirtualBox:~$ samtools sort ../SAMEA2569438.chr10.bam -o SAMEA2569438.chr10.sorted.bam -O BAM
 
-Note the `../` in the command, this means that the `bam` file is in the parent directory
+Note the `../` in the command, this means that the `bam` file is one directory up.
 
-Now index the new sorted `bam` file
+Now, build an index for the new sorted `bam` file:
 
          m_jan2020@mjan2020VirtualBox:~$ samtools index SAMEA2569438.chr10.sorted.bam
 
-Finally, repeat the `samtools view` command to print out a particular region:
+Finally, repeat the `samtools view` command to print a particular region:
 
          m_jan2020@mjan2020VirtualBox:~$ samtools view SAMEA2569438.chr10.sorted.bam 10:10000000-10001000
 
- * Some basic stats on the alignment
+ * Some basic stats on the alignment  
+
+You can use the `flagstat` command for this:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools flagstat SAMEA2569438.chr10.sorted.bam
 
@@ -341,12 +356,12 @@ The explanation of this report can be found in the [samtools stats](http://www.h
 
 * Print the base coverage per position  
 
-For this we can use `samtools mpileup`. The output of this command is explained [here](http://www.htslib.org/doc/samtools-mpileup.html).  
-You can `samtools mpileup` by doing:
+For this, we can use `samtools mpileup`. The output of this command is explained [here](http://www.htslib.org/doc/samtools-mpileup.html).  
+You can run `samtools mpileup` by doing:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam |less
 
-Now, let's try a combination of commands that is more complex to print all positions having a coverage >=10:
+Now let's try a command combination that is more complex to print all positions having a coverage >=10:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam | awk '{if ($4>=20) print}' | less
 

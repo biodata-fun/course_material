@@ -14,6 +14,12 @@ To open a terminal click on the `Terminal` icon you see in your screen:
 
 ![how_to_open_terminal](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/how_to_open_terminal.png)
 
+## Activate the conda environment used in this course  
+[Conda](https://docs.conda.io/en/latest/) is a package and environment management system that we have used in this course to install all the bioinformatics programs.  
+To start using Conda you need first to activate the course environment by entering the following command in the terminal window you have just opened:
+
+![conda_activate](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/conda_activate.png)
+
 ## Unix commands used in this course
 Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use during this course:
 
