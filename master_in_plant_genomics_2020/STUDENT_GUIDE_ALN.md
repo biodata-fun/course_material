@@ -464,9 +464,9 @@ Now, load the BAM file with your alignments by going to the folder named (`m_jan
 
         course->alignment->aln_visualization->SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
-![load_mini_bam_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_mini_bam.png)
-
 ![load_alignments_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_alignments.png)
+
+![load_mini_bam_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_mini_bam.png)
 
 And you will see two new tracks, one with the alignments and the other with the depth of coverage. The alignments do not appear yet, as the region is too large to render the data.
 
