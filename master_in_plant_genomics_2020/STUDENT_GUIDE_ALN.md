@@ -412,35 +412,35 @@ In this example, we will fetch the alignments for a specific region in chromosom
 
 ### Selecting the alignments for a specific genomic sub-region
 
-First, move to the directory we will use to extract a sub-region from the file generated in the previous section (`SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam`):
+First, move to the following directory to select the alignments falling in a given sub-region from the file generated in the previous section (`SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam`):
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/aln_visualization
 
-And again, we will use `samtools view` along with the region we want to extract. Remember that this command needs an indexed `BAM` file. So first we need to index the file:
+And again, we will use `samtools view` together with the region we want to extract. Remember that this command requires an indexed BAM file. So first we have to build an index for the file:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools index /home/m_jan2020/course/alignment/postprocessing/SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam
 
- Then we extract all the alignments for the `10:10000000-11000000` region that are correct, which means that both members of the read pair are correctly mapped. For this, we use the SAM bitwise flag = 2 and `samtools view`:
+ Then we will select all the alignments in the region with coordinates `10:10000000-11000000` that are correct, which means that both members of the read pair are mapped correctly. For this, we use the SAM bitwise flag = 2 and `samtools view`:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools view -f 2 /home/m_jan2020/course/alignment/postprocessing/SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam 10:10000000-11000000 -b -o SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
-And now we need to create an index for the new `BAM`, as IGV needs it to quickly retrieve the aligments to display:
+And now we need to build an index for the new BAM, as IGV needs it to quickly retrieve the aligments to display:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools index SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
 ### Using IGV with the new alignment file
 
-In this section we will use IGV to explore the file created in the previous section named `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam`.
+In this section we will use IGV to explore the alignments in the file created in the previous section named `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam`.
 
 Open `IGV` by going to your terminal and entering:
 
         igv
 
-You will need to load in `IGV` the FASTA file containing the chromosome 10 sequence for rice, as this sequence is not included by default in `IGV`:
+Once `IGV` is open, you will need to load the FASTA file containing the chromosome 10 sequence for rice, as this sequence is not included by default in `IGV`:
 
 ![load_genome_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_genome.png)
 
-Look for you file by going to the folder named (`m_jan2020`) and clicking on:
+Look for you file by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the FASTA file named `Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa`:
 
          course->reference->Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
@@ -450,17 +450,17 @@ Now, load the `GTF` file containing the rice gene annotations for chromosome 10:
 
 ![load_annotation_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation.png)
 
-The `GTF` file can be found by going to the folder named (`m_jan2020`) and clicking on:
+The `GTF` file can be found by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the GTF file named `Oryza_sativa.IRGSP-1.0.48.chr10.gtf.gz`:
 
         course->reference->Oryza_sativa.IRGSP-1.0.48.chr10.gtf.gz
 
 ![load_annotation1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation1.png)
 
-You will see the new track with genes annotated in chromosome 10
+You will see a new track with all the genes annotated in chromosome 10:
 
 ![annotation_view_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/annotation_view.png)
 
-Now, load the BAM file with your alignments by going to the folder named (`m_jan2020`) and clicking on:
+Now, load the BAM file with your alignments by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the BAM file named `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam`:
 
         course->alignment->aln_visualization->SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
@@ -468,15 +468,15 @@ Now, load the BAM file with your alignments by going to the folder named (`m_jan
 
 ![load_alignments_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_alignments.png)
 
-And you will see two new tracks, one with the alignments and the other with the depth of coverage. The alignments still do not appear, as the region is too large to render the data.
+And you will see two new tracks, one with the alignments and the other with the depth of coverage. The alignments do not appear yet, as the region is too large to render the data.
 
 ![alignments_view1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/alignments_view1.png)
 
-Enter the genomic interval you want to inspect in the blank box or click on the '-' or '+' signs to zoom in/out
+Enter the genomic interval you want to display in the blank search box or press the '-' or '+' keys to zoom in or out:
 
 ![alignments_view2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/alignments_view2.png)
 
-When you have finished working you save your session by doing:
+When you are done working you can save the session by doing:
 
 ![save_session1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session1.png)
 
