@@ -366,18 +366,18 @@ Now let's try a command combination that is more complex to print all positions 
         m_jan2020@mjan2020VirtualBox:~$ samtools mpileup -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10.sorted.bam | awk '{if ($4>=20) print}' | less
 
 ### Alignment post-processing
-The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following module of this course
+The alignment file in the BAM format needs a series of post-processing steps that are required for variant discovery. The different steps that are shown here will produce an analysis-ready BAM file that can be used in the following section of this course.
 
 ##### **Adding metadata to the alignment file**
-BWA generates a `BAM` file without any metadata on the sequencing experimental design that has been used, this is why we need to manually add this metadata so it can by used by the variant calling analysis that is described in the variant calling section of this course. For this, we are going to use [Picard AddOrReplaceReadGroups](https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-) in the following way:
+BWA generates a BAM file without metadata information about the experimental design that has been used during the sequencing, this is why we need to manually add this metadata so it can be used during the variant calling analysis described in the variant calling section of this course. To do this, we are going to use [Picard AddOrReplaceReadGroups](https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-) in the following way:
 
         m_jan2020@mjan2020VirtualBox:~$ picard AddOrReplaceReadGroups I=SAMEA2569438.chr10.sorted.bam RGSM=SAMEA2569438 RGLB=SAMEA2569438 RGPL=ILLUMINA O=SAMEA2569438.chr10.sorted.reheaded.bam RGPU=SAMEA2569438
 
-This command will add information on the sample id that has been sequenced, what sequencing platform has been used and also information on the sequencing library id. You can check the SAM header for the new BAM with metadata information by doing:
+This command will add information about the sample id that has been sequenced, which sequencing platform has been used and also information about the sequencing library id. You can verify that the SAM header contains this metadata information by doing:
 
         m_jan2020@mjan2020VirtualBox:~$ samtools view -H SAMEA2569438.chr10.sorted.reheaded.bam
 
-And you will see the added metadata in the `@RG` line:
+And you will see the new metadata in the line starting with `@RG`:
 
         @HD     VN:1.6  SO:unsorted
         @SQ     SN:10   LN:23207287
@@ -385,13 +385,14 @@ And you will see the added metadata in the `@RG` line:
         @PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa SAMEA2569438.chr10_1.fastq.gz SAMEA2569438.chr10_2.fastq.gz
 
 ##### **MarkDuplicates** 
-The alignment file can contain reads that are duplicates. These reads are originated in the PCR amplification step during the sample preparation that might produce identical reads coming from the same DNA fragment. These duplicate reads need to be identified and marked so they can be correctly handled by the variant calling tool. There are multiple tools to detect these duplicates, in this course we will use [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates), which is one of the most reliable ones.
+The alignment file we have generated using `BWA` may contain duplicate reads. These reads are originated in the PCR amplification step during the library preparation and might produce an over-representation of identical reads from the same DNA fragment. These duplicate reads must be identified and marked so they can be correctly handled by the variant calling tool.  
+There are multiple tools available to handle these duplicates, in this course we will use [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates),  which is one of the most reliable.
 
          m_jan2020@mjan2020VirtualBox:~$ picard MarkDuplicates -Xms1g I=SAMEA2569438.chr10.sorted.reheaded.bam O=SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam M=SAMEA2569438.chr10.metrics.txt
 
-We will use the option `M` so `MarkDuplicates` will generate a text file with metrics on the number of reads duplicates. This file is named ` SAMEA2569438.chr10.metrics.txt` in this case. 
+We use the `M` option so that `MarkDuplicates` generates a text file with metrics on the number of reads duplicates. This file is named `SAMEA2569438.chr10.metrics.txt` in this case. 
 
-Let's open this metrics file:
+Let's open this metrics file
 
          m_jan2020@mjan2020VirtualBox:~$ less SAMEA2569438.chr10.metrics.txt
 The first part of the file is the most relevant for us:
@@ -401,16 +402,17 @@ The first part of the file is the most relevant for us:
         SAMEA2569438    1755    170498  196     1755    133     5827    0       0.034389        2437223
         ...
 
-We can display the reads that are duplicates using samtools view in combination with the bitwise FLAG value in the second column that retrieves the PCR duplicates
+Finally, we print the reads that are duplicates using `samtools view` in combination with the bitwise FLAG value in the second column that selects the PCR duplicates:
 
          m_jan2020@mjan2020VirtualBox:~$ samtools view -f 1024 SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam |less
 
 ### **Viewing the aligned reads using IGV**
-The Integrative Genomics Viewer [IGV](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the alignments we have generated. In this example we will fetch the alignments for a specific region in chromosome 10.
+The Integrative Genomics Viewer ([IGV](http://software.broadinstitute.org/software/igv/)) is a useful interactive tool to explore visually the genomic data resulting from your analysis. We are going to use it in this section of the course to display the alignments we have generated.  
+In this example, we will fetch the alignments for a specific region in chromosome 10.
 
-### Extracting a certain genomic sub-region for IGV
+### Selecting the alignments for a specific genomic sub-region
 
-First, you need to move to the directory where we will extract a sub-region from the `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam` file that was generated in the previous section:
+First, move to the directory we will use to extract a sub-region from the file generated in the previous section (`SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam`):
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/aln_visualization
 
