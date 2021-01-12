@@ -476,7 +476,7 @@ Enter the genomic interval you want to display in the blank search box or press 
 
 ![alignments_view2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/alignments_view2.png)
 
-When you are done working you can save the session by doing:
+When you are done working, you can save the session by doing:
 
 ![save_session1](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/save_session1.png)
 

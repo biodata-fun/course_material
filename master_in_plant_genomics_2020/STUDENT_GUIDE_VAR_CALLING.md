@@ -1,9 +1,10 @@
 IGSR - Variant calling
 ======================
 
-In the first part of the course, we used the sequencing data generated in the [3000 Rice Genomes project](http://iric.irri.org/resources/3000-genomes-project) for one particular sample with ENA accession id of [SAMEA2569438](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438), to generate an analysis-ready BAM alignment file. This part of the course starts from this alignment file and will generate a VCF file containing germ-line variants for chromosome 10. 
+In the first part of the course, we used the sequencing data generated in the [3000 Rice Genomes project](http://iric.irri.org/resources/3000-genomes-project) for one particular sample with ENA accession id [SAMEA2569438](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438), to generate an analysis-ready BAM alignment file.  
+This part of the course starts from this alignment file and will generate a VCF file containing the germ-line variants identified in chromosome 10. 
 
-## Log in the VirtualBox machine
+## Log in the Ubuntu virtual machine
 
         user: m_jan2020
         pwd: m_jan2020
@@ -21,14 +22,15 @@ To start using Conda you need first to activate the course environment by enteri
 ![conda_activate](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/conda_activate.png)
 
 ## Unix commands used in this course
-Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. It is advisable to know how to list the contents of a directory. Here are some of the basic commands we will use during this course:
+Most of the bioinformatics tools used for genomic data analysis run in Unix/Linux, so it is recommended to have a basic knowledge of the commands used to move around the different directories in your system. You should also know how to list the contents of a directory or how to print the contents of a given text file.  
+Here are some of the basic commands we will use during this course:
 
-* Print the current working directory [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm)
+* Print the current working directory with the [pwd](https://www.tutorialspoint.com/unix_commands/pwd.htm) command
 
         m_jan2020@mjan2020VirtualBox:~$ pwd
         /home/m_jan2020
 
-* Change directory [cd](https://www.tutorialspoint.com/unix_commands/cd.htm)
+* Change directory ([cd](https://www.tutorialspoint.com/unix_commands/cd.htm))
 
         # go to the alignment dir
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/alignment/
@@ -45,7 +47,7 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         m_jan2020@mjan2020VirtualBox:~$ pwd
         /home/m_jan2020
 
-* Listing directory contents [ls](https://www.tutorialspoint.com/unix_commands/ls.htm)
+* Listing the directory contents ([ls](https://www.tutorialspoint.com/unix_commands/ls.htm))
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
@@ -60,74 +62,73 @@ Most of the Bioinformatics tools used for genomic data analysis run in UNIX/Linu
         -rw-rw-r-- 1 m_jan2020 m_jan2020 11M Nov 26 17:43 SAMEA2569438.chr10_1.fastq.gz
         -rw-rw-r-- 1 m_jan2020 m_jan2020 12M Nov 26 17:43 SAMEA2569438.chr10_2.fastq.gz
 
-* Open a file to see its contents using the `less` UNIX command:
+* Open a file to see its contents using the (`less`) UNIX command:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # enter the `less` command followed by the file name you want to
-        # open:
-        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
+        # enter the `less` command followed by the file name you want to open:
+        m_jan2020@mjan2020VirtualBox:~/course/data$ less SAMEA2569438.chr10_2.fastq.gz
         # press Ctrl+F to go forward one window
         # press Ctrl+B to go back one window
         # press 'q' if you want to exit
 
-Now, make `less` to print out line number information by doing:
+* Now, make (`less`) to print out the line number information by doing:
 
-        (base) m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
+        m_jan2020@mjan2020VirtualBox:~/course/data$ less -N SAMEA2569438.chr10_2.fastq.gz
 
 * Output redirection:  
-In Linux output redirection means that we can redirect the STDOUT of a command to a file. For this, we use the `>` symbol.   
+In Linux, output redirection means that we can redirect the STDOUT of a given command to a file. For this, we use the (`>`) symbol.   
 Example:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # the output of 'ls' will be redirected to the file 'listing'
+        # the output of 'ls' will be redirected to the file named 'listing'
         m_jan2020@mjan2020VirtualBox:~/course/data$ ls -l > listing
 
         # examine the contents of 'listing'
          m_jan2020@mjan2020VirtualBox:~/course/data$ less listing
 
 * Piping  
- Is a form of redirection to transfer the standard output of one command/program to another command/program
- for further processing. The different commands in the pipe are connected using the pipe character `|`. In this
- way we can combine 2 or more commands. Pipes are unidirectional i.e., data flows from left to right.  
+ It is a form of redirection that transfers the standard output of one command/program to another command/program for further processing. The different commands in the pipe are connected using the pipe character (`|`). In this
+ way we can combine 2 or more commands. Pipes are unidirectional, i.e. data flows from left to right.  
  Examples:
 
         # go to the following directory
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/data
 
-        # counting the number of files in a directory
+        # count the number of files in a directory
         m_jan2020@mjan2020VirtualBox:~$ ls | wc -l
 
 ## Variant calling
 Variant calling is the process that identifies variants from sequence data ([see](https://www.ebi.ac.uk/training-beta/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.)).
-It starts with the alignment of the sequencing data in the `FASTQ` files that has been explained in the first section of this course. Then, we can use a variant discovery tool to identify the germline variants. 
+It begins with the alignment of the sequencing data present in the `FASTQ` files and that has been explained in the first section of the course. Then, the next step in the analysis consists on using a variant discovery tool to identify the germline variants. 
 
-There are multiple variant calling tools available, the ones we have more experience with in our group are [SAMTools mpileup](http://samtools.github.io/bcftools/bcftools.html#mpileup), the [GATK suite](https://gatk.broadinstitute.org/hc/en-us) and [FreeBayes](https://github.com/ekg/freebayes). In this course we are going to use FreeBayes, as it is sensitive, precise and relatively simple to use. 
+There are multiple variant calling tools available, the ones we have the most experience with in our group are [SAMTools mpileup](http://samtools.github.io/bcftools/bcftools.html#mpileup), the [GATK suite](https://gatk.broadinstitute.org/hc/en-us) and [Freebayes](https://github.com/ekg/freebayes). In this course we are going to use FreeBayes, since it is sensitive, accurate and relatively easy to use. 
 
 ### **Freebayes**
-FreeBayes is a haplotype-based variant detector, that uses a joint genotyping method capable of reporting variants on a single sample or on a cohort of multiple samples. It's going to be capable of detecting SNPs (single nucleotide polymorphisms), indels (short insertions and deletions) and MNPs (multi-nucleotide polymorphisms)
+Freebayes is a haplotype-based variant detector, that uses a joint genotyping method capable of reporting variants in a single sample or in a cohort of samples. It will also be able to detect SNPs (single nucleotide polymorphisms), indels (short insertions and deletions) and MNPs (multi-nucleotide polymorphisms).
 
 #### **Reference Genome**
-FreeBayes needs the reference sequence in the `FASTA` format. In this section of the course we are going to use the same chromosome 10 sequence extracted from the *Oryza_sativa* (rice) genome that we used for the alignment section of the course.
+Freebayes requires the reference sequence in the `FASTA` format. In this section of the course we are going to use the same chromosome 10 sequence extracted from the *Oryza_sativa* (rice) genome that we used for the alignment section of the course.
 
-#### **Using FreeBayes**
-To run Freebayes you need to specify the ploidy of the genome being analysed, the FASTA reference sequence used for the alignment and the analysis-ready BAM generated in the first section of the course. Once you have this information you are prepared to run Freebayes, for this, go to the directory where the program is going to be run:
+#### **Using Freebayes**
+To run Freebayes, you will need to specify the ploidy of the genome being analysed, the location of the FASTA reference sequence used for the alignment, and the location of the analysis-ready BAM generated in the first section of the course. Once you have this information, you are ready to run Freebayes.  
+To do this, go to the directory where the program is going to be run:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/vcalling
 
-And then enter:
+And enter:
 
         m_jan2020@mjan2020VirtualBox:~$ freebayes -f /home/m_jan2020/course/reference/Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa /home/m_jan2020/course/alignment/postprocessing/SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.bam --ploidy 2 | bgzip -c > SAMEA2569438.chr10.vcf.gz
 
-This command pipes the output of FreeBayes to `bgzip`, which is a special compression/decompression program that is part of SAMTools. It is better to compress the VCF to make the file size smaller and also to use some of the `BCFTools` commands that are discussed later in this section.
+This command pipes the Freebayes output to `bgzip`, which is a special compression/decompression program included with Samtools. It is preferable to compress the VCF to decrease the file size and also to use some of the `BCFTools` commands that are discussed later in this course.
 
 #### **Understanding the output VCF**
-After running FreeBayes, you will get a compressed vcf file named `SAMEA2569438.chr10.vcf.gz` containing the identified variants. The complete `VCF` specification with an explanation for each of the pieces of information in the file can be found [here](https://samtools.github.io/hts-specs/VCFv4.3.pdf). 
+After running Freebayes, you will get a compressed VCF file named `SAMEA2569438.chr10.vcf.gz` containing the identified variants. The full VCF specification with an explanation of each of the components of the file can be found [here](https://samtools.github.io/hts-specs/VCFv4.3.pdf). 
 
-The most relevant sections for us are the meta-information lines (prefixed with `##`), the header line (prefixed with `#`) and then the lines containing information about the variants. These data lines will contain the following text fields separated by tabs:  
+The most relevant sections for us are the meta-information lines (prefixed with `##`), the header line (prefixed with `#`) and then the data lines containing information about the variants. These data lines will contain the following text fields separated by tabs:  
 
 | Col  | Field       | Brief description     |
 | -----| ----------- | --------------------- | 
@@ -137,22 +138,22 @@ The most relevant sections for us are the meta-information lines (prefixed with 
 | 4    | REF         | Reference allele |
 | 5    | ALT         | Alternate allele |
 | 6    | QUAL        | Variant quality |
-| 7    | FILTER      | Filter string (`PASS` if it passsed all filters) |
+| 7    | FILTER      | Filter string (`PASS` i.e. passed all filters) |
 | 8    | INFO        | Semicolon-separated series of variant additional information fields |
 | 9    | GENOTYPE    | Genotype information (if present) | 
 
 #### **Exploring the VCF file using BCFTools** 
-[BCFTools](http://samtools.github.io/bcftools/bcftools.html) is a suite of tools written in C that are quite efficient to manipulate files in the `VCF` format. Here we are going to see some of most useful commmands to manipulate the `VCF` file we have just generated. 
+[BCFTools](http://samtools.github.io/bcftools/bcftools.html) is a set of tools written in C that are quite efficient to manipulate files in the `VCF` format.  
+In this section we are going to see some of the most useful commmands to manipulate the `VCF` file we have just generated. 
 
-So move to the directory where you ran Freebayes if you are not already there:
+So first go to the directory where you ran Freebayes:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/vcalling
 
 * Print the header section
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools view -h SAMEA2569438.chr10.vcf.gz
-
-You get:
+You should get something similar to:
 
        ##fileformat=VCFv4.1
        ##FILTER=<ID=PASS,Description="All filters passed">
@@ -239,9 +240,9 @@ You get:
         10      9009333 .       GATC    GC      63.2885 .       AB=0.833333;ABP=8.80089;AC=1;AF=0.5;AN=2;AO=5;CIGAR=1M2D1M;DP=6;DPB=3.5;DPRA=0;EPP=3.44459;EPPR=5.18177;GTI=0;LEN=2;MEANALT=1;MQM=39.2;MQMR=60;NS=1;NUMALT=1;ODDS=5.84393;PAIRED=1;PAIREDR=1;PAO=0;PQA=0;PQR=0;PRO=0;QA=142;QR=32;RO=1;RPL=3;RPP=3.44459;RPPR=5.18177;RPR=2;RUN=1;SAF=0;SAP=13.8677;SAR=5;SRF=0;SRP=5.18177;SRR=1;TYPE=del;technology.ILLUMINA=1        GT:DP:RO:QR:AO:QA:GL    0/1:6:1:32:5:142:-9.33308,0,-1.39313
         ...
 
-* Print variants for a specific region
+* Print variants located in a specific region
 
-To fetch the variants located in a specific genomic region you need first to index the VCF, for this use `bcftools index`:
+To fetch the variants located in a specific genomic region, first you need to build an index for the VCF, to do this use `bcftools index`:
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools index SAMEA2569438.chr10.vcf.gz
 
@@ -283,12 +284,12 @@ And you get:
 
 #### **Filtering the artifactual variants**
 
-The process for identifiying variants is not perfect, and FreeBayes and in general all tools used to identify variants will report variants that are not real. These artifactual variants must be idenfitied and flagged so that users or tools using them do not take them into account, or treat them with caution in any subsequent analysis.
+The process for identifiying variants is not perfect, and Freebayes and in general all tools used to identify variants will report variants that are not real. These artifactual variants must be idenfitied and flagged so that users or tools using them do not take them into account, or treat them with caution in any subsequent analysis.
 
-There are several filtering tools and strategies available for variant filtering, with varying degrees of complexity and sophistication. However, in this course we will use a very simple, yet effective approach, which consists of using the quality value assigned by FreeBayes as a proxy to estimate the likelihood of a variant being real. The lower the quality value, the less likely it is that a variant is real.
+There are several filtering tools and strategies available for variant filtering, with varying degrees of complexity and sophistication. However, in this course we will use a very simple, yet effective approach, which consists of using the quality value assigned by Freebayes as a proxy to estimate the likelihood of a variant being real. The lower the quality value, the less likely it is that a variant is real.
 
-In this course, we will use `bcftools filter` with a hard cut-off value of `<=1` to flag the variants that have a low quality.
-For this, first move to the directory where you ran Freebayes if you are not already there:
+In this course, we will use `bcftools filter` with a hard cut-off value of `<=1` to flag the variants that have a low quality.  
+For this, first go to the directory where you ran Freebayes if you are not already there:
 
         m_jan2020@mjan2020VirtualBox:~$ cd /home/m_jan2020/course/vcalling
 
@@ -296,13 +297,13 @@ And  enter the following in your terminal:
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools filter -sQUALFILTER -e'QUAL<1' SAMEA2569438.chr10.vcf.gz -o SAMEA2569438.chr10.filt.vcf.gz -Oz
 
-Where the string passed using the `-s` option will set the label used for the filtered lines in the 7th column of the VCF and `-Oz` is used in `bcftools` for generating the output VCF in a compressed format.
+Where the string passed using the `-s` option sets the label used for the filtered lines in the 7th column of the VCF, while the `-Oz` option is used to generate the output VCF in a compressed format.
 
-Now, use 'bcftools view' to check that the 7th column has 2 new labels: `QUALFILTER` and `PASS`.
+Now, use `bcftools view` to verify that the 7th column has 2 new labels: `QUALFILTER` and `PASS`.
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools view -H SAMEA2569438.chr10.filt.vcf.gz |less
 
-`-H` is used to skip the header section and only print the data lines:
+The `-H` option is used to skip the header section and print the data lines only:
 
         10      9000024 .       G       T       52.1811 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=1X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=1;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=74;QR=0;RO=0;RPL=0;RPP=7.35324;RPPR=0;RPR=2;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=snp;technology.ILLUMINA=1    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:74:-7.02402,-0.60206,0
         10      9000056 .       CA      TC      41.7389 PASS    AB=0;ABP=0;AC=2;AF=1;AN=2;AO=2;CIGAR=2X;DP=2;DPB=2;DPRA=0;EPP=7.35324;EPPR=0;GTI=0;LEN=2;MEANALT=1;MQM=60;MQMR=0;NS=1;NUMALT=1;ODDS=7.37776;PAIRED=1;PAIREDR=0;PAO=0;PQA=0;PQR=0;PRO=0;QA=63;QR=0;RO=0;RPL=2;RPP=7.35324;RPPR=0;RPR=0;RUN=1;SAF=2;SAP=7.35324;SAR=0;SRF=0;SRP=0;SRR=0;TYPE=mnp;technology.ILLUMINA=1    GT:DP:RO:QR:AO:QA:GL    1/1:2:0:0:2:63:-5.97977,-0.60206,0
@@ -324,7 +325,7 @@ And you get:
 
 * How many variants have been filtered?
 
-We can use the `stats` command together with the `-f` option and the `QUALFILTER` label to generate a report taken into account only the filtered variants:
+We can use the `stats` command together with the `-f` option and the `QUALFILTER` label to generate a report that takes into account only the filtered variants:
 
         m_jan2020@mjan2020VirtualBox:~$ bcftools stats -f QUALFILTER SAMEA2569438.chr10.filt.vcf.gz |grep ^SN
 
@@ -340,7 +341,7 @@ And you get:
         SN	0	number of multiallelic sites:	6
         SN	0	number of multiallelic SNP sites:	2
 
-* How many variants remain after the filtering process?
+* How many variants remain after the filtering?
 
 We need to use the `stats` command with the `PASS` label this time to generate a new report with the variants that have not been filtered:
 
@@ -360,17 +361,17 @@ You get:
 
 #### **Exploring the identified variants using IGV**
 
-The Integrative Genomics Viewer [IGV](http://software.broadinstitute.org/software/igv/) is a useful interactive tool that can be used to explore visually your genomic data. We are going to use it here to display the variants we have identified. In this example we will explore the variants in a specific region in chromosome 10.
+The Integrative Genomics Viewer ([IGV](http://software.broadinstitute.org/software/igv/)) is a useful interactive tool that can be used to visually explore your genomic data. We are going to use it here to display the variants we have identified located in a specific region of chromosome 10.
 
-First, open the `igv` viewer by going to your terminal and typing:
+First, open the `igv` program by going to your terminal and typing:
 
         igv
 
-You will need to load in `IGV` the FASTA file containing the chromosome 10 sequence for rice, as this sequence is not included by default in `IGV`:
+Once `IGV` is open, you will need to load the FASTA file containing the chromosome 10 sequence for rice, as this sequence is not included by default in `IGV`:
 
 ![load_genome_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_genome.png)
 
-Look for you file by going to the folder named (`m_jan2020`) and clicking on:
+Look for you file by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the FASTA file named `Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa`:
 
          course->reference->Oryza_sativa.IRGSP-1.0.dna.toplevel.chr10.fa
 
@@ -380,13 +381,13 @@ Now, load the `GTF` file containing the rice gene annotations for chromosome 10:
 
 ![load_annotation_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation.png)
 
-The `GTF` file can be found by going to the folder named (`m_jan2020`) and clicking on:
+The `GTF` file can be found by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the GTF file named `Oryza_sativa.IRGSP-1.0.48.chr10.gtf.gz`:
 
         course->reference->Oryza_sativa.IRGSP-1.0.48.chr10.gtf.gz
 
 ![load_annotation1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_annotation1.png)
 
-You will see the new track with genes annotated in chromosome 10
+You will see a new track with all the genes annotated in chromosome 10:
 
 ![annotation_view_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/annotation_view.png)
 
@@ -394,7 +395,7 @@ Now, load the filtered `VCF` file containing the variants:
 
 ![load_variants_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/load_alignments.png)
 
-The `VCF` file can be found by going to the folder named (`m_jan2020`) and clicking on:
+The `VCF` file can be found by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the VCF file named `SAMEA2569438.chr10.filt.vcf.gz`:
 
         course->vcalling->SAMEA2569438.chr10.filt.vcf.gz
 
@@ -402,7 +403,7 @@ The `VCF` file can be found by going to the folder named (`m_jan2020`) and click
 
 ![variants_overallview_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variants_overallview.png)
 
-Now, you can click on a particular variant (red vertical bar) to display information such as:
+Now, you can click on a particular variant (red vertical bars) to display information such as:
 
 * Position
 * Reference and alternate alleles
@@ -414,23 +415,23 @@ Now, you can click on a particular variant (red vertical bar) to display informa
 
 ![vt_gen_attrbs_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/vt_gen_attrbs.png)
 
-You can also click on the blue vertical bar to display genotype information and attributes:
+You can also click on the blue vertical bars to display the genotype information and genotype attributes:
 
 ![variant_gt_attrbs_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variant_gt_attrbs.png)
 
-Let's examine in detail an INDEL variant. For this, enter the following genomic coordinate in your navigate box:
+Let's take a closer look to an INDEL variant. For this, enter the following genomic coordinate in the search box:
 
         10:9,058,200-9,058,229
 
-Click on the variant on the left side of the screen:
+Click on the red vertical bar in the center of the screen:
 
 ![indel_example1_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example1.png)
 
-You can see that this is a 1bp insertion (CAA->CAAA) that have an alternate allele_count=2. Which means it is an homozygous variant, this can be confirmed by clicking on the genotype information bar:
+You can see that this is a 1bp insertion (CAA->CAAA) that have an alternate allele_count=2. Which means it is a homozygous variant, this can be confirmed by clicking on the genotype information bar:
 
 ![indel_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/indel_example2.png)
 
-Now let's visualize a SNP, for this enter the following genomic coordinate in the navigate box:
+Now, let's visualize a SNP, for this enter the following genomic coordinate in the search box anc click the leftmost variant:
 
         10:9,059,325-9,059,426
 
@@ -440,11 +441,11 @@ You can see that this is a single nucleotide substitution (G->A) that have an al
 
 ![snp_example2_igv](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/snp_example2.png)
 
-Note also that the vertical bar for the heterozygous variant have 2 colours whereas the homozygous variants will have a single colour in `IGV`.
+Also note that the vertical bars for the heterozygous variants have 2 colours, while the homozygous variants will have only one colour in `IGV`.
 
 * Examining the aligned reads supporting a certain variant
 
-IGV is really useful for examining the reads in your alignment file supporting a certain variant. For this, load the `BAM` file that was previously uploaded to IGV in the alignment section of this course by going to the folder named (`m_jan2020`) and clicking on:
+`IGV` is really useful for examining the reads in your alignment file supporting a certain variant. To do this, you need to load the `BAM` file generated in the alignment section of this course that was previously uploaded to `IGV`, by going to the folder named (`m_jan2020`) and clicking on the different folders until you find the BAM file named `SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam`:
 
         course->alignment->aln_visualization->SAMEA2569438.chr10.sorted.reheaded.mark_duplicates.mini.bam
 
@@ -454,6 +455,6 @@ Now, go to the following coordinate:
 
         10:10,000,166-10,000,226
 
-You can see the SNP variant and the reads supporting this SNP, you can also click on the coverage track and see that there are a total of 9 reads covering this position, 3 out had the alternate allele `G` and 6 out have the reference allele `A`:
+Take a closer look to the SNP in position `10:10,000,198`. You can see the SNP variant and the reads supporting this SNP, you can also click the coverage track and see that there are a total of 9 reads covering this position, 3 of 9 have the alternate allele `G` and 6 of 9 have the reference allele `A`:
 
 ![variant_with_reads](https://www.ebi.ac.uk/~ernesto/IGSR/masters_IAMZ_jan2020/variant_with_reads.png)
