@@ -1,5 +1,8 @@
-IGSR - Alignment of Next-Generation sequencing data
-===================================================
+Alignment of Next-Generation sequencing data
+============================================
+**Author:** Ernesto Lowy  
+**Affiliation:** [IGSR](https://www.internationalgenome.org/home) (EMBL-EBI)  
+**Emails:** ernesto@ebi.ac.uk or ernestolowy@gmail.com  
 
 This part of the course covers the alignment or mapping of the Next generation sequencing (NGS) data generated from a given organism for which a reference sequence for the genome already exists.
 

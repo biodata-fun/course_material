@@ -1,5 +1,8 @@
-IGSR - Variant calling
-======================
+Variant calling
+===============
+**Author:** Ernesto Lowy  
+**Affiliation:** [IGSR](https://www.internationalgenome.org/home) (EMBL-EBI)  
+**Emails:** ernesto@ebi.ac.uk or ernestolowy@gmail.com  
 
 In the first part of the course, we used the sequencing data generated in the [3000 Rice Genomes project](http://iric.irri.org/resources/3000-genomes-project) for one particular sample with ENA accession id [SAMEA2569438](https://www.ebi.ac.uk/ena/browser/view/SAMEA2569438), to generate an analysis-ready BAM alignment file.  
 This part of the course starts from this alignment file and will generate a VCF file containing the germ-line variants identified in chromosome 10. 
